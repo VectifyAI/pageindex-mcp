@@ -15,14 +15,6 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 - **No Chunking**: Preserve full document context and structure
 - **No Top-K**: Retrieve all relevant passages automatically
 
-### Best For
-
-- **Financial Reports** - SEC filings, earnings reports, regulatory documents
-- **Legal Documents** - Contracts, case law, compliance documents
-- **Medical Records** - Clinical reports, research papers, patient records
-- **Technical Manuals** - Engineering documentation, API specs, procedures
-- **Research Papers** - Academic publications, scientific documentation
-
 ## Architecture
 
 This MCP server acts as a bridge between Claude/LLM clients and the PageIndex platform:
