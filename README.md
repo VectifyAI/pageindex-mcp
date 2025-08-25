@@ -25,7 +25,7 @@ This MCP server acts as a bridge between Claude/LLM clients and the PageIndex pl
                          ├── process_document (local file handling)
                          │   ├── Uploads to PageIndex via signed URLs
                          │   └── Processes with PageIndex OCR + Tree Generation
-                         └── Other tools (proxy to PageIndex MCP API)
+                         └── Other tools (proxy to PageIndex Remote MCP Server)
 ```
 
 ## Features
