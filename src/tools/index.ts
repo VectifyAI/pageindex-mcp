@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { PageIndexMcpClient } from '../client/mcp-client.js';
 import { processDocument, processDocumentSchema } from './process-document.js';
+import { getDocumentStructureSchema } from './get-document-structure.js';
 
 // Re-export all schemas
-export { processDocumentSchema };
+export { processDocumentSchema, getDocumentStructureSchema };
 
 // Tool schemas
 export const askDocumentSchema = z.object({
@@ -44,9 +45,7 @@ export const searchDocumentsSchema = z.object({
   limit: z.number().optional().default(10).describe('Maximum results to return'),
 });
 
-export const getDocumentStructureSchema = z.object({
-  doc_id: z.string().describe('Document ID to get structure from'),
-});
+// getDocumentStructureSchema is now imported from get-document-structure.js
 
 // Tool definitions for the stdio server
 export interface ToolDefinition {
@@ -91,7 +90,7 @@ export const tools: ToolDefinition[] = [
   {
     name: 'get_document_structure',
     description:
-      'Extract the hierarchical structure of a processed document for navigation and analysis. Returns organized structure including headers, sections, and subsections. Useful for understanding document organization and enabling structured navigation through complex documents.',
+      'Extract the hierarchical structure of a processed document for navigation and analysis. Returns organized structure including headers, sections, and subsections with configurable detail levels (summary, outline, full) and depth control. Useful for understanding document organization and enabling structured navigation through complex documents.',
     inputSchema: getDocumentStructureSchema,
     handler: createProxyTool('get_document_structure'),
   },
