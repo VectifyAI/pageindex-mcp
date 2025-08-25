@@ -18,7 +18,7 @@ export function loadConfig(): Config {
 
   return {
     apiKey,
-    apiUrl: process.env.PAGEINDEX_API_URL || 'https://pageindex.vercel.app',
+    apiUrl: process.env.PAGEINDEX_API_URL || 'https://dash.pageindex.ai',
     debug: process.env.DEBUG === 'true',
     connectionTimeout: parseInt(process.env.CONNECTION_TIMEOUT || '30000', 10),
   };
