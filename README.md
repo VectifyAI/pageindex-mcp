@@ -20,7 +20,7 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 This MCP server acts as a bridge between Claude/LLM clients and the PageIndex platform:
 
 ```
-[Claude/LLM] <--> [PageIndex MCP Server] <--> [PageIndex MCP API]
+[Claude/LLM] <--> [PageIndex Local MCP Server] <--> [PageIndex Remote MCP Server]
                          |
                          ├── process_document (local file handling)
                          │   ├── Uploads to PageIndex via signed URLs
@@ -47,7 +47,7 @@ First, you'll need to create an API key:
 2. Create a new API key for your application
 3. Copy the API key for use in the configuration below
 
-#### Option 1: Local MCP Server (with local PDF upload)
+### Option 1: Local MCP Server (with local PDF upload)
 
 **Requirements:** Node.js ≥18.0.0
 
