@@ -1,0 +1,46 @@
+{
+  "name": "pageindex-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for PageIndex",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "pageindex-mcp": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "pageindex",
+    "document-processing"
+  ],
+  "author": "Yuexun Jiang",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.3",
+    "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "mime-types": "^2.1.35",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.24.6"
+  },
+  "devDependencies": {
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^22.10.5",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+}

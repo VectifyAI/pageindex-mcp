@@ -1,0 +1,41 @@
+# Source files
+src/
+tsconfig.json
+
+# Development files
+.eslintrc.*
+.eslintcache
+
+# Documentation
+docs/
+IMPLEMENTATION.md
+
+# Development dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Environment files
+.env*
+
+# Test files
+test/
+tests/
+*.test.*
+*.spec.*
+
+# Development scripts
+scripts/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+coverage/
