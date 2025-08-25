@@ -8,20 +8,20 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 
 ### Key Advantages over Vector-based RAG
 
-- **🎯 Higher Accuracy**: Relevance beyond similarity - ideal for domain-specific documents where semantics are similar
-- **👁️ Better Transparency**: Clear reasoning trajectory with traceable search paths
-- **🧠 Like A Human**: Retrieve information like a human expert navigates documents
-- **🚫 No Vector DB**: No extra infrastructure overhead
-- **📄 No Chunking**: Preserve full document context and structure
-- **🔍 No Top-K**: Retrieve all relevant passages automatically
+- **Higher Accuracy**: Relevance beyond similarity - ideal for domain-specific documents where semantics are similar
+- **Better Transparency**: Clear reasoning trajectory with traceable search paths
+- **Like A Human**: Retrieve information like a human expert navigates documents
+- **No Vector DB**: No extra infrastructure overhead
+- **No Chunking**: Preserve full document context and structure
+- **No Top-K**: Retrieve all relevant passages automatically
 
 ### Best For
 
-- 💰 **Financial Reports** - SEC filings, earnings reports, regulatory documents
-- ⚖️ **Legal Documents** - Contracts, case law, compliance documents
-- 🏥 **Medical Records** - Clinical reports, research papers, patient records
-- ⚙️ **Technical Manuals** - Engineering documentation, API specs, procedures
-- 🔬 **Research Papers** - Academic publications, scientific documentation
+- **Financial Reports** - SEC filings, earnings reports, regulatory documents
+- **Legal Documents** - Contracts, case law, compliance documents
+- **Medical Records** - Clinical reports, research papers, patient records
+- **Technical Manuals** - Engineering documentation, API specs, procedures
+- **Research Papers** - Academic publications, scientific documentation
 
 ## Architecture
 
@@ -38,14 +38,22 @@ This MCP server acts as a bridge between Claude/LLM clients and the PageIndex pl
 
 ## Features
 
-- **🔄 Local PDF Processing**: Upload local PDF files directly without manual uploads
-- **🌐 URL Support**: Process documents from URLs
-- **🔗 Full PageIndex Integration**: Access all PageIndex capabilities (OCR, tree generation, reasoning-based retrieval)
-- **🔐 Secure Authentication**: API key authentication with PageIndex platform
-- **📝 TypeScript**: Full type safety with MCP SDK
-- **🎯 Claude Desktop Ready**: Easy integration with Claude Desktop
+- **Local PDF Processing**: Upload local PDF files directly without manual uploads
+- **URL Support**: Process documents from URLs
+- **Full PageIndex Integration**: Access all PageIndex capabilities (OCR, tree generation, reasoning-based retrieval)
+- **Secure Authentication**: API key authentication with PageIndex platform
+- **TypeScript**: Full type safety with MCP SDK
+- **Claude Desktop Ready**: Easy integration with Claude Desktop
 
 ## Usage
+
+### Getting Started
+
+First, you'll need to create an API key:
+
+1. Visit https://dash.pageindex.ai/api-keys
+2. Create a new API key for your application
+3. Copy the API key for use in the configuration below
 
 #### Option 1: Local MCP Server (with local PDF upload)
 
@@ -60,14 +68,12 @@ Add to your MCP configuration:
       "command": "npx",
       "args": ["-y", "pageindex-mcp"],
       "env": {
-        "PAGEINDEX_API_KEY": "your_api_key_here"
+        "PAGEINDEX_API_KEY": "<YOUR_PAGEINDEX_API_KEY>"
       }
     }
   }
 }
 ```
-
-> The `-y` flag automatically installs the package if not already present.
 
 ### Option 2: Remote MCP Server
 
@@ -80,7 +86,7 @@ Alternatively, connect directly to PageIndex without this wrapper:
       "type": "http",
       "url": "https://dash.pageindex.ai/api/mcp/mcp",
       "headers": {
-        "Authorization": "Bearer <YOUR_API_KEY>"
+        "Authorization": "Bearer <YOUR_PAGEINDEX_API_KEY>"
       }
     }
   }
@@ -93,12 +99,12 @@ Alternatively, connect directly to PageIndex without this wrapper:
 
 | Tool | Description | Key Parameters |
 |------|-------------|----------------|
-| 📄 **process_document** | Upload and process PDF documents with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
-| 🤔 **ask_document** | Query documents using natural language with reasoning-based retrieval | `doc_id`, `query`, `thinking` (optional) |
-| 📋 **get_page_content** | Extract specific page content from processed documents | `doc_id`, `pages` ("5", "3-7", "1,5,10") |
-| 📚 **list_documents** | List documents with comprehensive status information | `status`, `limit`, `offset` (all optional) |
-| 🗑️ **remove_document** | Permanently delete documents and associated data | `doc_ids` (array of document IDs) |
-| 🔍 **search_documents** | Search document library using keywords | `query`, `status`, `limit` (optional) |
+| **process_document** | Upload and process PDF documents with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
+| **ask_document** | Query documents using natural language with reasoning-based retrieval | `doc_id`, `query`, `thinking` (optional) |
+| **get_page_content** | Extract specific page content from processed documents | `doc_id`, `pages` ("5", "3-7", "1,5,10") |
+| **list_documents** | List documents with comprehensive status information | `status`, `limit`, `offset` (all optional) |
+| **remove_document** | Permanently delete documents and associated data | `doc_ids` (array of document IDs) |
+| **search_documents** | Search document library using keywords | `query`, `status`, `limit` (optional) |
 
 > **Quick Example**: Process a local PDF with `process_document`, then query it with `ask_document` using the returned document ID.
 
