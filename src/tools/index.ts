@@ -44,6 +44,10 @@ export const searchDocumentsSchema = z.object({
   limit: z.number().optional().default(10).describe('Maximum results to return'),
 });
 
+export const getDocumentStructureSchema = z.object({
+  doc_id: z.string().describe('Document ID to get structure from'),
+});
+
 // Tool definitions for the stdio server
 export interface ToolDefinition {
   name: string;
@@ -83,6 +87,13 @@ export const tools: ToolDefinition[] = [
       'Extract specific page content from processed documents. Flexible page selection: single page ("5"), ranges ("3-7"), or multiple specific pages ("1,5,10"). Returns structured text content with image metadata (excludes base64 data for token efficiency). Useful for detailed analysis of specific document sections.',
     inputSchema: getPageContentSchema,
     handler: createProxyTool('get_page_content'),
+  },
+  {
+    name: 'get_document_structure',
+    description:
+      'Extract the hierarchical structure of a processed document for navigation and analysis. Returns organized structure including headers, sections, and subsections. Useful for understanding document organization and enabling structured navigation through complex documents.',
+    inputSchema: getDocumentStructureSchema,
+    handler: createProxyTool('get_document_structure'),
   },
   {
     name: 'list_documents',
