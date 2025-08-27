@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { PageIndexMcpClient } from '../client/mcp-client.js';
+import { ToolDefinition } from './types.js';
 
 // Schema for get document structure parameters
 export const getDocumentStructureSchema = z.object({
@@ -22,3 +24,12 @@ export const getDocumentStructureSchema = z.object({
 });
 
 export type McpGetDocumentStructureParams = z.infer<typeof getDocumentStructureSchema>;
+
+export const getDocumentStructureTool: ToolDefinition = {
+  name: 'get_document_structure',
+  description:
+    'Extract the hierarchical structure of a processed document for navigation and analysis. Returns organized structure including headers, sections, and subsections with configurable detail levels (summary, outline, full) and depth control. Useful for understanding document organization and enabling structured navigation through complex documents.',
+  inputSchema: getDocumentStructureSchema,
+  handler: async (params: any, client: PageIndexMcpClient) =>
+    await client.callTool('get_document_structure', params),
+};

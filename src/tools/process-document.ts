@@ -5,6 +5,7 @@ import { PageIndexMcpClient } from '../client/mcp-client.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { createErrorResponse } from '../result.js';
+import { ToolDefinition } from './types.js';
 
 // Schema for process document parameters - accepts both URLs and local file paths
 export const processDocumentSchema = z.object({
@@ -173,3 +174,11 @@ async function downloadPdf(url: string): Promise<FileInfo> {
     throw error;
   }
 }
+
+export const processDocumentTool: ToolDefinition = {
+  name: 'process_document',
+  description:
+    'Upload and process PDF documents from URLs or local files. Supports OCR processing, hierarchical content extraction, and intelligent document analysis. Returns a unique doc_id for subsequent operations. Processing typically takes 0-3 minutes depending on document size (estimate: 2 seconds per page). Supports files up to 100MB.',
+  inputSchema: processDocumentSchema,
+  handler: processDocument,
+};
