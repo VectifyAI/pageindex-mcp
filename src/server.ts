@@ -18,7 +18,7 @@ export class PageIndexStdioServer {
     this.server = new Server(
       {
         name: 'pageindex-mcp',
-        version: '1.0.0',
+        version: '0.3.1',
       },
       {
         capabilities: {
@@ -86,11 +86,11 @@ export class PageIndexStdioServer {
     try {
       // Connect to remote MCP client
       await this.mcpClient.connect();
-      
+
       // Fetch remote tools and update local tools registry
       const remoteTools = await this.remoteToolsProxy.fetchRemoteTools();
       updateToolsWithRemote(remoteTools);
-      
+
       // Start the stdio server
       const transport = new StdioServerTransport();
       await this.server.connect(transport);

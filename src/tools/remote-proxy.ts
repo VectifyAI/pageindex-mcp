@@ -22,14 +22,19 @@ export class RemoteToolsProxy {
     try {
       const toolsResponse = await this.client.listTools();
       
-      this.remoteTools = toolsResponse.tools.map((tool: Tool) => ({
-        name: tool.name,
-        description: tool.description || `Remote tool: ${tool.name}`,
-        inputSchema: this.convertJsonSchemaToZod(tool.inputSchema),
-        handler: async (params: any, client: PageIndexMcpClient) => {
-          return await client.callTool(tool.name, params);
-        },
-      }));
+      // Exclude tools that are used internally by process_document
+      const excludedTools = ['get_signed_upload_url', 'submit_document'];
+      
+      this.remoteTools = toolsResponse.tools
+        .filter((tool: Tool) => !excludedTools.includes(tool.name))
+        .map((tool: Tool) => ({
+          name: tool.name,
+          description: tool.description || `Remote tool: ${tool.name}`,
+          inputSchema: this.convertJsonSchemaToZod(tool.inputSchema),
+          handler: async (params: any, client: PageIndexMcpClient) => {
+            return await client.callTool(tool.name, params);
+          },
+        }));
 
       return this.remoteTools;
     } catch (error) {
