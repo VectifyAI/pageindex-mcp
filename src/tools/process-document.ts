@@ -8,11 +8,11 @@ import { createErrorResponse } from '../result.js';
 import { ToolDefinition } from './types.js';
 
 // Schema for process document parameters - accepts both URLs and local file paths
-export const processDocumentSchema = z.object({
+const processDocumentSchema = z.object({
   url: z.string().describe('URL to a PDF document or local file path'),
 });
 
-export type ProcessDocumentParams = z.infer<typeof processDocumentSchema>;
+type ProcessDocumentParams = z.infer<typeof processDocumentSchema>;
 
 interface FileInfo {
   name: string;
@@ -25,7 +25,7 @@ interface FileInfo {
  * Simplified process_document tool that handles only PDF files
  * Supports both URLs and local file paths with inline file handling
  */
-export async function processDocument(
+async function processDocument(
   params: ProcessDocumentParams,
   mcpClient: PageIndexMcpClient,
 ): Promise<CallToolResult> {

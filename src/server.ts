@@ -3,13 +3,13 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { PageIndexMcpClient } from './client/mcp-client.js';
-import { tools, executeTool, updateToolsWithRemote, RemoteToolsProxy } from './tools/index.js';
-import { config_ as config } from './config.js';
+import { getTools, executeTool, updateToolsWithRemote, RemoteToolsProxy } from './tools/index.js';
+import { CONFIG as config } from './config.js';
 
 /**
  * Stdio MCP Server that wraps the remote PageIndex MCP server
  */
-export class PageIndexStdioServer {
+class PageIndexStdioServer {
   private server: Server;
   private mcpClient: PageIndexMcpClient;
   private remoteToolsProxy: RemoteToolsProxy;
@@ -34,6 +34,7 @@ export class PageIndexStdioServer {
 
   private setupHandlers() {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
+      const tools = getTools();
       const toolsResponse = {
         tools: tools.map((tool) => ({
           name: tool.name,

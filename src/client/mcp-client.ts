@@ -3,7 +3,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { createAuthenticatedFetch } from './auth.js';
-import { config_ as config } from '../config.js';
+import { CONFIG as config } from '../config.js';
 
 /**
  * Wrapper for MCP Client to connect to remote PageIndex MCP server
