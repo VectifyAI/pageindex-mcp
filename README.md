@@ -92,14 +92,13 @@ Alternatively, connect directly to PageIndex without this wrapper:
 | Tool | Description | Key Parameters |
 |------|-------------|----------------|
 | **process_document** | Upload and process PDF documents with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
-| **ask_document** | Query documents using natural language with reasoning-based retrieval | `doc_id`, `query`, `thinking` (optional) |
 | **get_page_content** | Extract specific page content from processed documents | `doc_id`, `pages` ("5", "3-7", "1,5,10") |
 | **get_document_structure** | Extract hierarchical document structure with configurable detail levels | `doc_id`, `mode` ("summary", "outline", "full"), `max_depth` (1-10) |
 | **list_documents** | List documents with comprehensive status information | `status`, `limit`, `offset` (all optional) |
 | **remove_document** | Permanently delete documents and associated data | `doc_ids` (array of document IDs) |
 | **search_documents** | Search document library using keywords | `query`, `status`, `limit` (optional) |
 
-> **Quick Example**: Process a local PDF with `process_document`, then query it with `ask_document` using the returned document ID.
+> **Quick Example**: Process a local PDF with `process_document`, then extract content with `get_page_content` using the returned document ID.
 
 ## License
 This project is licensed under the terms of the MIT open source license. Please refer to [MIT](./LICENSE) for the full terms.
