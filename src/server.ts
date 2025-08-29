@@ -18,7 +18,7 @@ export class PageIndexStdioServer {
     this.server = new Server(
       {
         name: 'pageindex-mcp',
-        version: '0.3.1',
+        version: '0.3.2',
       },
       {
         capabilities: {
