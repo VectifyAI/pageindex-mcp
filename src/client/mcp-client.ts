@@ -34,7 +34,7 @@ export class PageIndexMcpClient {
 
     this.client = new Client({
       name: 'pageindex-mcp',
-      version: '1.0.0',
+      version: '0.4.0',
     });
 
     // Try StreamableHTTP first, fallback to SSE for compatibility
