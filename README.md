@@ -94,6 +94,7 @@ Alternatively, connect directly to PageIndex without this wrapper:
 | **process_document** | Upload and process PDF documents with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
 | **get_page_content** | Extract specific page content from processed documents | `doc_id`, `pages` ("5", "3-7", "1,5,10") |
 | **get_document_structure** | Extract hierarchical document structure with configurable detail levels | `doc_id`, `mode` ("summary", "outline", "full"), `max_depth` (1-10) |
+| **get_document** | Get basic document info (single-file list_documents) | `doc_id` |
 | **list_documents** | List documents with comprehensive status information | `status`, `limit`, `offset` (all optional) |
 | **remove_document** | Permanently delete documents and associated data | `doc_ids` (array of document IDs) |
 | **search_documents** | Search document library using keywords | `query`, `status`, `limit` (optional) |
