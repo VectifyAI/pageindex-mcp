@@ -4,6 +4,7 @@ import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { createAuthenticatedFetch } from './auth.js';
 import { CONFIG as config } from '../config.js';
+import { VERSION } from '../version.js';
 
 /**
  * Wrapper for MCP Client to connect to remote PageIndex MCP server
@@ -34,7 +35,7 @@ export class PageIndexMcpClient {
 
     this.client = new Client({
       name: 'pageindex-mcp',
-      version: '0.4.0',
+      version: VERSION,
     });
 
     // Try StreamableHTTP first, fallback to SSE for compatibility

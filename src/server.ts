@@ -5,6 +5,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { PageIndexMcpClient } from './client/mcp-client.js';
 import { getTools, executeTool, updateToolsWithRemote, RemoteToolsProxy } from './tools/index.js';
 import { CONFIG as config } from './config.js';
+import { VERSION } from './version.js';
 
 /**
  * Stdio MCP Server that wraps the remote PageIndex MCP server
@@ -18,7 +19,7 @@ class PageIndexStdioServer {
     this.server = new Server(
       {
         name: 'pageindex-mcp',
-        version: '0.4.0',
+        version: VERSION,
       },
       {
         capabilities: {
