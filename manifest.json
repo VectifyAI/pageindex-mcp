@@ -21,9 +21,7 @@
     "entry_point": "build/index.js",
     "mcp_config": {
       "command": "node",
-      "args": [
-        "${__dirname}/build/index.js"
-      ],
+      "args": ["${__dirname}/build/index.js"],
       "env": {
         "PAGEINDEX_API_KEY": "${user_config.api_key}"
       }
