@@ -8,7 +8,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node scripts/sync-manifest-version.js"
+        "prepareCmd": "node scripts/sync-manifest-version.js && pnpm run dxt:build && pnpm run dxt:pack"
       }
     ],
     [
