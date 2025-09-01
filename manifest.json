@@ -4,7 +4,7 @@
   "display_name": "PageIndex",
   "version": "1.0.4",
   "description": "MCP server for PageIndex",
-  "long_description": "This extension provides access to PageIndex's next-generation reasoning-based RAG system. Unlike traditional vector search, PageIndex uses multi-step reasoning to understand and retrieve information from documents. It includes OCR capabilities for processing PDFs and other document formats, making it ideal for document analysis, research tasks, and information extraction from complex documents.",
+  "long_description": "This extension provides access to PageIndex's next-generation reasoning-based RAG system. Unlike traditional vector search, PageIndex uses multi-step reasoning to understand and retrieve information from documents.",
   "author": {
     "name": "VectifyAI",
     "url": "https://github.com/VectifyAI"
