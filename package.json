@@ -13,7 +13,10 @@
     "start": "node build/index.js",
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf build",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "dxt:build": "npm run clean && npm run build",
+    "dxt:pack": "npm run dxt:build && dxt pack",
+    "dxt:dev": "dxt dev"
   },
   "keywords": [
     "mcp",
@@ -33,6 +36,7 @@
     "zod-to-json-schema": "^3.24.6"
   },
   "devDependencies": {
+    "@anthropic-ai/dxt": "^0.2.6",
     "@types/mime-types": "^2.1.4",
     "@types/node": "^22.10.5",
     "@typescript-eslint/eslint-plugin": "^8.18.2",

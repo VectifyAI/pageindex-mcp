@@ -86,3 +86,8 @@ Thumbs.db
 
 # MCP specific
 *.mcp
+
+# DXT/Desktop Extension files
+*.dxt
+*.mcpb
+.dxt/

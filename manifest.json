@@ -1,0 +1,38 @@
+{
+  "dxt_version": "0.1",
+  "name": "PageIndex",
+  "version": "0.5.0",
+  "description": "A Model Context Protocol (MCP) server for PageIndex - Next-Generation Reasoning-based RAG. Process PDFs with OCR and retrieve information using multi-step reasoning instead of traditional vector search.",
+  "author": {
+    "name": "VectifyAI"
+  },
+  "homepage": "https://github.com/VectifyAI/pageindex-mcp",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "pageindex",
+    "document-processing",
+    "pdf",
+    "ocr",
+    "reasoning-rag"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "build/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/build/index.js"],
+      "env": {
+        "PAGEINDEX_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "PageIndex API Key",
+      "description": "Your PageIndex API key. Get one at https://dash.pageindex.ai/api-keys",
+      "required": true
+    }
+  }
+}
