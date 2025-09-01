@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.2...v1.0.3) (2025-09-01)
+
+
+### Bug Fixes
+
+* update DXT asset label ([bb3df5a](https://github.com/VectifyAI/pageindex-mcp/commit/bb3df5a034940cae78df5cd9cc718ea7fbcbe8c8))
+
 ## [1.0.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.1...v1.0.2) (2025-09-01)
 
 
