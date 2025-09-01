@@ -8,15 +8,15 @@
     "pageindex-mcp": "build/index.js"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "start": "node build/index.js",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "clean": "rm -rf build",
     "prepublishOnly": "npm run clean && npm run build",
-    "dxt:build": "npm run clean && npm run build",
+    "dxt:build": "tsup",
     "dxt:pack": "npm run dxt:build && dxt pack",
     "dxt:dev": "dxt dev",
     "postinstall": "test -d .git && simple-git-hooks || true",
@@ -32,9 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.3",
-    "axios": "^1.7.7",
     "date-fns": "^4.1.0",
-    "dotenv": "^16.4.5",
     "mime-types": "^2.1.35",
     "p-retry": "^7.0.0",
     "zod": "^3.23.8",
@@ -50,6 +48,7 @@
     "@types/node": "^22.10.5",
     "semantic-release": "^24.2.7",
     "simple-git-hooks": "^2.13.1",
+    "tsup": "^8.5.0",
     "typescript": "^5.7.3"
   },
   "engines": {

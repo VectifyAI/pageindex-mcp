@@ -1,8 +1,3 @@
-import { config } from 'dotenv';
-
-// Load environment variables
-config();
-
 interface Config {
   apiKey: string;
   apiUrl: string;

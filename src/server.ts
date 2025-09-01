@@ -13,7 +13,6 @@ import {
   RemoteToolsProxy,
   updateToolsWithRemote,
 } from './tools/index.js';
-import { VERSION } from './version.js';
 
 /**
  * Stdio MCP Server that wraps the remote PageIndex MCP server
@@ -27,7 +26,7 @@ class PageIndexStdioServer {
     this.server = new Server(
       {
         name: 'pageindex-mcp',
-        version: VERSION,
+        version: __VERSION__,
       },
       {
         capabilities: {

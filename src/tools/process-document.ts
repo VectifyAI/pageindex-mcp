@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import axios from 'axios';
 import pRetry, { AbortError } from 'p-retry';
 import { z } from 'zod';
 import type { PageIndexMcpClient } from '../client/mcp-client.js';
@@ -52,16 +51,14 @@ async function processDocument(
       throw new Error('No upload URL received from server');
     }
 
-    const uploadResponse = await axios.put(
-      uploadInfo.upload_url,
-      fileInfo.buffer,
-      {
-        headers: {
-          'Content-Type': fileInfo.mimeType,
-        },
-        timeout: 60000,
+    const uploadResponse = await fetch(uploadInfo.upload_url, {
+      method: 'PUT',
+      body: fileInfo.buffer,
+      headers: {
+        'Content-Type': fileInfo.mimeType,
       },
-    );
+      signal: AbortSignal.timeout(60000),
+    });
     if (uploadResponse.status !== 200) {
       throw new Error(
         `File upload failed with status ${uploadResponse.status}`,
@@ -136,12 +133,19 @@ async function readLocalPdf(filePath: string): Promise<FileInfo> {
 async function downloadPdf(url: string): Promise<FileInfo> {
   return pRetry(
     async () => {
-      const response = await axios.get(url, {
-        responseType: 'arraybuffer',
-        timeout: 120000, // 2 minute timeout
-        maxContentLength: 100 * 1024 * 1024, // 100MB max file size
-        validateStatus: (status) => status === 200,
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(120000), // 2 minute timeout
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      // Check content length
+      const contentLength = response.headers.get('content-length');
+      if (contentLength && parseInt(contentLength, 10) > 100 * 1024 * 1024) {
+        throw new Error(`File too large: ${contentLength} bytes (max: 100MB)`);
+      }
 
       // Extract filename from URL or Content-Disposition header
       let filename = path.basename(new URL(url).pathname);
@@ -155,7 +159,7 @@ async function downloadPdf(url: string): Promise<FileInfo> {
         }
       }
 
-      const contentType = response.headers['content-type'];
+      const contentType = response.headers.get('content-type');
       if (
         !contentType?.includes('pdf') &&
         !filename.toLowerCase().endsWith('.pdf')
@@ -165,7 +169,8 @@ async function downloadPdf(url: string): Promise<FileInfo> {
         );
       }
 
-      const buffer = Buffer.from(response.data);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
 
       return {
         name: filename,
@@ -181,15 +186,16 @@ async function downloadPdf(url: string): Promise<FileInfo> {
       maxTimeout: 10000,
       onFailedAttempt: (error) => {
         // Don't retry on client errors (4xx) except 429 (rate limiting)
-        if (axios.isAxiosError(error)) {
-          const status = error.response?.status;
+        if (error instanceof Error && error.message.includes('HTTP ')) {
+          const statusMatch = error.message.match(/HTTP (\d+)/);
+          const status = statusMatch ? parseInt(statusMatch[1], 10) : undefined;
           if (status && status >= 400 && status < 500 && status !== 429) {
             throw new AbortError(
               status === 404
                 ? 'PDF not found at the provided URL'
                 : status === 403
                   ? 'Access denied - URL requires authentication or is blocked'
-                  : `HTTP ${status}: ${error.response?.statusText}`,
+                  : error.message,
             );
           }
         }

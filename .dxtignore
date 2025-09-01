@@ -1,0 +1,11 @@
+.github/
+
+.npmignore
+.releaserc.json
+tsup.config.ts
+biome.json
+
+node_modules/
+scripts/
+src/
+

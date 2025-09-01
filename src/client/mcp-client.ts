@@ -4,7 +4,6 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import pRetry, { AbortError } from 'p-retry';
 import { CONFIG as config } from '../config.js';
-import { VERSION } from '../version.js';
 import { createAuthenticatedFetch } from './auth.js';
 
 /**
@@ -39,7 +38,7 @@ export class PageIndexMcpClient {
 
         this.client = new Client({
           name: 'pageindex-mcp',
-          version: VERSION,
+          version: __VERSION__,
         });
 
         // Try StreamableHTTP first, fallback to SSE for compatibility
