@@ -2,6 +2,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import pRetry, { AbortError } from 'p-retry';
 import { CONFIG as config } from '../config.js';
 import { VERSION } from '../version.js';
 import { createAuthenticatedFetch } from './auth.js';
@@ -28,47 +29,65 @@ export class PageIndexMcpClient {
       return;
     }
 
-    const streamableHttpUrl = new URL(`${config.apiUrl}/api/mcp/mcp`);
-    streamableHttpUrl.searchParams.set('local_upload', '1');
+    await pRetry(
+      async () => {
+        const streamableHttpUrl = new URL(`${config.apiUrl}/api/mcp/mcp`);
+        streamableHttpUrl.searchParams.set('local_upload', '1');
 
-    const sseUrl = new URL(`${config.apiUrl}/api/mcp/sse`);
-    sseUrl.searchParams.set('local_upload', '1');
+        const sseUrl = new URL(`${config.apiUrl}/api/mcp/sse`);
+        sseUrl.searchParams.set('local_upload', '1');
 
-    this.client = new Client({
-      name: 'pageindex-mcp',
-      version: VERSION,
-    });
-
-    // Try StreamableHTTP first, fallback to SSE for compatibility
-    try {
-      // Use simplified authenticated fetch
-      const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
-
-      this.transport = new StreamableHTTPClientTransport(streamableHttpUrl, {
-        fetch: authenticatedFetch,
-        requestInit: {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      });
-      await this.client.connect(this.transport);
-    } catch (_error) {
-      try {
-        // For SSE transport, we need to pass authenticated fetch as well
-        const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
-        this.transport = new SSEClientTransport(sseUrl, {
-          fetch: authenticatedFetch,
+        this.client = new Client({
+          name: 'pageindex-mcp',
+          version: VERSION,
         });
-        await this.client.connect(this.transport);
-      } catch (sseError) {
-        throw new Error(
-          `Failed to connect to PageIndex MCP server: ${sseError}`,
-        );
-      }
-    }
 
-    this.connected = true;
+        // Try StreamableHTTP first, fallback to SSE for compatibility
+        try {
+          // Use simplified authenticated fetch
+          const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
+
+          this.transport = new StreamableHTTPClientTransport(
+            streamableHttpUrl,
+            {
+              fetch: authenticatedFetch,
+              requestInit: {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              },
+            },
+          );
+          await this.client.connect(this.transport);
+        } catch (_error) {
+          try {
+            // For SSE transport, we need to pass authenticated fetch as well
+            const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
+            this.transport = new SSEClientTransport(sseUrl, {
+              fetch: authenticatedFetch,
+            });
+            await this.client.connect(this.transport);
+          } catch (sseError) {
+            throw new AbortError(
+              `Failed to connect to PageIndex MCP server: ${sseError}`,
+            );
+          }
+        }
+
+        this.connected = true;
+      },
+      {
+        retries: 3,
+        factor: 2,
+        minTimeout: 1000,
+        maxTimeout: 8000,
+        onFailedAttempt: (error) => {
+          console.warn(
+            `Connection attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
+          );
+        },
+      },
+    );
   }
 
   /**
@@ -79,11 +98,29 @@ export class PageIndexMcpClient {
       throw new Error('Client not connected. Call connect() first.');
     }
 
-    const result = await this.client.callTool({
-      name,
-      arguments: params || {},
-    });
-    return result as CallToolResult;
+    return pRetry(
+      async () => {
+        if (!this.client) {
+          throw new Error('Client not available');
+        }
+        const result = await this.client.callTool({
+          name,
+          arguments: params || {},
+        });
+        return result as CallToolResult;
+      },
+      {
+        retries: 2,
+        factor: 1.5,
+        minTimeout: 500,
+        maxTimeout: 3000,
+        onFailedAttempt: (error) => {
+          console.warn(
+            `Tool call "${name}" attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
+          );
+        },
+      },
+    );
   }
 
   /**

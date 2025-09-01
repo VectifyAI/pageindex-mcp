@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import axios from 'axios';
+import pRetry, { AbortError } from 'p-retry';
 import { z } from 'zod';
 import type { PageIndexMcpClient } from '../client/mcp-client.js';
 import { createErrorResponse } from '../result.js';
@@ -133,64 +134,72 @@ async function readLocalPdf(filePath: string): Promise<FileInfo> {
  * Download a PDF from a remote URL
  */
 async function downloadPdf(url: string): Promise<FileInfo> {
-  try {
-    const response = await axios.get(url, {
-      responseType: 'arraybuffer',
-      timeout: 120000, // 2 minute timeout
-      maxContentLength: 100 * 1024 * 1024, // 100MB max file size
-      validateStatus: (status) => status === 200,
-    });
+  return pRetry(
+    async () => {
+      const response = await axios.get(url, {
+        responseType: 'arraybuffer',
+        timeout: 120000, // 2 minute timeout
+        maxContentLength: 100 * 1024 * 1024, // 100MB max file size
+        validateStatus: (status) => status === 200,
+      });
 
-    // Extract filename from URL or Content-Disposition header
-    let filename = path.basename(new URL(url).pathname);
-    const contentDisposition = response.headers['content-disposition'];
-    if (contentDisposition) {
-      const filenameMatch = contentDisposition.match(
-        /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
-      );
-      if (filenameMatch?.[1]) {
-        filename = filenameMatch[1].replace(/['"]/g, '');
+      // Extract filename from URL or Content-Disposition header
+      let filename = path.basename(new URL(url).pathname);
+      const contentDisposition = response.headers['content-disposition'];
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(
+          /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
+        );
+        if (filenameMatch?.[1]) {
+          filename = filenameMatch[1].replace(/['"]/g, '');
+        }
       }
-    }
 
-    const contentType = response.headers['content-type'];
-    if (
-      !contentType?.includes('pdf') &&
-      !filename.toLowerCase().endsWith('.pdf')
-    ) {
-      throw new Error(
-        `File must be a PDF. Got content-type: ${contentType}, filename: ${filename}`,
-      );
-    }
-
-    const buffer = Buffer.from(response.data);
-
-    return {
-      name: filename,
-      buffer,
-      size: buffer.length,
-      mimeType: 'application/pdf',
-    };
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ECONNABORTED') {
-        throw new Error(
-          'Download timeout - file too large or connection too slow',
-        );
-      } else if (error.response?.status === 404) {
-        throw new Error('PDF not found at the provided URL');
-      } else if (error.response?.status === 403) {
-        throw new Error(
-          'Access denied - URL requires authentication or is blocked',
-        );
-      } else if (error.response?.status) {
-        throw new Error(
-          `HTTP ${error.response.status}: ${error.response.statusText}`,
+      const contentType = response.headers['content-type'];
+      if (
+        !contentType?.includes('pdf') &&
+        !filename.toLowerCase().endsWith('.pdf')
+      ) {
+        throw new AbortError(
+          `File must be a PDF. Got content-type: ${contentType}, filename: ${filename}`,
         );
       }
-    }
-    throw error;
-  }
+
+      const buffer = Buffer.from(response.data);
+
+      return {
+        name: filename,
+        buffer,
+        size: buffer.length,
+        mimeType: 'application/pdf',
+      };
+    },
+    {
+      retries: 3,
+      factor: 2,
+      minTimeout: 2000,
+      maxTimeout: 10000,
+      onFailedAttempt: (error) => {
+        // Don't retry on client errors (4xx) except 429 (rate limiting)
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          if (status && status >= 400 && status < 500 && status !== 429) {
+            throw new AbortError(
+              status === 404
+                ? 'PDF not found at the provided URL'
+                : status === 403
+                  ? 'Access denied - URL requires authentication or is blocked'
+                  : `HTTP ${status}: ${error.response?.statusText}`,
+            );
+          }
+        }
+
+        console.warn(
+          `PDF download attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left. URL: ${url}`,
+        );
+      },
+    },
+  );
 }
 
 export const processDocumentTool: ToolDefinition = {
