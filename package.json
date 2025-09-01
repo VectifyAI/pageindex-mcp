@@ -41,6 +41,7 @@
     "@anthropic-ai/dxt": "^0.2.6",
     "@biomejs/biome": "^2.2.2",
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@types/mime-types": "^2.1.4",
     "@types/node": "^22.10.5",

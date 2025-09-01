@@ -1,7 +1,7 @@
 {
   "dxt_version": "0.1",
   "name": "PageIndex",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "A Model Context Protocol (MCP) server for PageIndex - Next-Generation Reasoning-based RAG. Process PDFs with OCR and retrieve information using multi-step reasoning instead of traditional vector search.",
   "author": {
     "name": "VectifyAI"
@@ -21,7 +21,9 @@
     "entry_point": "build/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/build/index.js"],
+      "args": [
+        "${__dirname}/build/index.js"
+      ],
       "env": {
         "PAGEINDEX_API_KEY": "${user_config.api_key}"
       }

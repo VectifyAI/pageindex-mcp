@@ -1,9 +1,18 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type (leave empty for automatic based on commits)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - patch
+          - minor
+          - major
 
 permissions:
   contents: write # to be able to publish a GitHub release
