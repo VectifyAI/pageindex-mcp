@@ -1,7 +1,7 @@
+import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import { PageIndexMcpClient } from '../client/mcp-client.js';
-import { ToolDefinition } from './types.js';
+import type { PageIndexMcpClient } from '../client/mcp-client.js';
+import type { ToolDefinition } from './types.js';
 
 /**
  * Remote tool proxy that dynamically fetches tool definitions from remote server
@@ -21,10 +21,10 @@ export class RemoteToolsProxy {
   async fetchRemoteTools(): Promise<ToolDefinition[]> {
     try {
       const toolsResponse = await this.client.listTools();
-      
+
       // Exclude tools that are used internally by process_document
       const excludedTools = ['get_signed_upload_url', 'submit_document'];
-      
+
       this.remoteTools = toolsResponse.tools
         .filter((tool: Tool) => !excludedTools.includes(tool.name))
         .map((tool: Tool) => ({
@@ -64,17 +64,19 @@ export class RemoteToolsProxy {
     switch (type) {
       case 'object': {
         if (!properties) return z.object({});
-        
+
         const zodObj: Record<string, z.ZodSchema> = {};
-        
+
         for (const [key, prop] of Object.entries(properties)) {
           const propSchema = this.convertJsonSchemaToZod(prop);
-          zodObj[key] = required.includes(key) ? propSchema : propSchema.optional();
+          zodObj[key] = required.includes(key)
+            ? propSchema
+            : propSchema.optional();
         }
-        
+
         return z.object(zodObj);
       }
-      
+
       case 'string': {
         if (enumValues && Array.isArray(enumValues)) {
           let schema = z.enum(enumValues as [string, ...string[]]);
@@ -90,7 +92,7 @@ export class RemoteToolsProxy {
           return schema;
         }
       }
-      
+
       case 'number':
       case 'integer': {
         let schema: z.ZodSchema = z.number();
@@ -102,7 +104,7 @@ export class RemoteToolsProxy {
         }
         return schema;
       }
-      
+
       case 'boolean': {
         let schema: z.ZodSchema = z.boolean();
         if (jsonSchema.description) {
@@ -113,7 +115,7 @@ export class RemoteToolsProxy {
         }
         return schema;
       }
-      
+
       case 'array': {
         const itemSchema = this.convertJsonSchemaToZod(jsonSchema.items || {});
         let schema = z.array(itemSchema);
@@ -122,7 +124,7 @@ export class RemoteToolsProxy {
         }
         return schema;
       }
-      
+
       default:
         return z.any();
     }

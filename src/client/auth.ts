@@ -1,4 +1,4 @@
-import { FetchLike } from '@modelcontextprotocol/sdk/shared/transport.js';
+import type { FetchLike } from '@modelcontextprotocol/sdk/shared/transport.js';
 
 /**
  * Creates an authenticated fetch function that adds Bearer token authentication

@@ -1,17 +1,18 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { createAuthenticatedFetch } from './auth.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { CONFIG as config } from '../config.js';
 import { VERSION } from '../version.js';
+import { createAuthenticatedFetch } from './auth.js';
 
 /**
  * Wrapper for MCP Client to connect to remote PageIndex MCP server
  */
 export class PageIndexMcpClient {
   private client: Client | null = null;
-  private transport: StreamableHTTPClientTransport | SSEClientTransport | null = null;
+  private transport: StreamableHTTPClientTransport | SSEClientTransport | null =
+    null;
   private apiKey: string;
   private connected = false;
 
@@ -52,7 +53,7 @@ export class PageIndexMcpClient {
         },
       });
       await this.client.connect(this.transport);
-    } catch (error) {
+    } catch (_error) {
       try {
         // For SSE transport, we need to pass authenticated fetch as well
         const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
@@ -61,7 +62,9 @@ export class PageIndexMcpClient {
         });
         await this.client.connect(this.transport);
       } catch (sseError) {
-        throw new Error(`Failed to connect to PageIndex MCP server: ${sseError}`);
+        throw new Error(
+          `Failed to connect to PageIndex MCP server: ${sseError}`,
+        );
       }
     }
 
@@ -76,7 +79,10 @@ export class PageIndexMcpClient {
       throw new Error('Client not connected. Call connect() first.');
     }
 
-    const result = await this.client.callTool({ name, arguments: params || {} });
+    const result = await this.client.callTool({
+      name,
+      arguments: params || {},
+    });
     return result as CallToolResult;
   }
 

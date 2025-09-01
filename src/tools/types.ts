@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { PageIndexMcpClient } from '../client/mcp-client.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { z } from 'zod';
+import type { PageIndexMcpClient } from '../client/mcp-client.js';
 
 export interface ToolDefinition {
   name: string;

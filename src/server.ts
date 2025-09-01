@@ -1,10 +1,18 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { PageIndexMcpClient } from './client/mcp-client.js';
-import { getTools, executeTool, updateToolsWithRemote, RemoteToolsProxy } from './tools/index.js';
 import { CONFIG as config } from './config.js';
+import {
+  executeTool,
+  getTools,
+  RemoteToolsProxy,
+  updateToolsWithRemote,
+} from './tools/index.js';
 import { VERSION } from './version.js';
 
 /**
@@ -62,7 +70,8 @@ class PageIndexStdioServer {
               type: 'text',
               text: JSON.stringify(
                 {
-                  error: error instanceof Error ? error.message : 'Unknown error',
+                  error:
+                    error instanceof Error ? error.message : 'Unknown error',
                   tool: name,
                   timestamp: new Date().toISOString(),
                 },

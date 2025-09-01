@@ -1,12 +1,12 @@
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { PageIndexMcpClient } from '../client/mcp-client.js';
+import type { PageIndexMcpClient } from '../client/mcp-client.js';
 import { processDocumentTool } from './process-document.js';
-import { ToolDefinition } from './types.js';
+import type { ToolDefinition } from './types.js';
 
+export { RemoteToolsProxy } from './remote-proxy.js';
 // Re-export ToolDefinition type
 export { ToolDefinition } from './types.js';
-export { RemoteToolsProxy } from './remote-proxy.js';
 
 // Local tools that require file system access or special local processing
 const localTools: ToolDefinition[] = [processDocumentTool];
@@ -28,7 +28,8 @@ export function getTools(): ToolDefinition[] {
 export function updateToolsWithRemote(remoteTools: ToolDefinition[]) {
   // Filter out remote tools that might conflict with local tools
   const filteredRemoteTools = remoteTools.filter(
-    (remoteTool) => !localTools.some((localTool) => localTool.name === remoteTool.name),
+    (remoteTool) =>
+      !localTools.some((localTool) => localTool.name === remoteTool.name),
   );
 
   tools = [...localTools, ...filteredRemoteTools];
