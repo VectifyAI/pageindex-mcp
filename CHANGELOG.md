@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.0...v1.0.1) (2025-09-01)
+
+
+### Bug Fixes
+
+* add manual release workflow trigger and manifest version sync ([3052abb](https://github.com/VectifyAI/pageindex-mcp/commit/3052abba1378e79f5aea410acf50c0341f266414))
+
 # 1.0.0 (2025-09-01)
 
 
