@@ -15,19 +15,6 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 - **No Chunking**: Preserve full document context and structure
 - **No Top-K**: Retrieve all relevant passages automatically
 
-## Architecture
-
-This MCP server acts as a bridge between Claude/LLM clients and the PageIndex platform:
-
-```
-[Claude/LLM] <--> [PageIndex Local MCP Server] <--> [PageIndex Remote MCP Server]
-                         |
-                         ├── process_document (local file handling)
-                         │   ├── Uploads to PageIndex via signed URLs
-                         │   └── Processes with PageIndex OCR + Tree Generation
-                         └── Other tools (proxy to PageIndex Remote MCP Server)
-```
-
 ## Features
 
 - **Local PDF Processing**: Upload local PDF files directly without manual uploads
