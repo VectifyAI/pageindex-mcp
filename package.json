@@ -19,7 +19,8 @@
     "dxt:build": "npm run clean && npm run build",
     "dxt:pack": "npm run dxt:build && dxt pack",
     "dxt:dev": "dxt dev",
-    "postinstall": "simple-git-hooks"
+    "postinstall": "test -d .git && simple-git-hooks || true",
+    "prepare": "test -d .git && simple-git-hooks || true"
   },
   "keywords": [
     "mcp",
