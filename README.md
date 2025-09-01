@@ -91,13 +91,12 @@ Alternatively, connect directly to PageIndex without this wrapper:
 
 | Tool | Description | Key Parameters |
 |------|-------------|----------------|
-| **process_document** | Upload and process PDF documents with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
+| **process_document** | Upload and process PDF documents from local files or URLs with PageIndex OCR and tree generation | `url` - Local file path or PDF URL |
+| **recent_documents** | Get recent documents with status overview | `limit` (optional) |
+| **get_document** | Get basic document info and status | `doc_id` |
+| **get_document_structure** | Extract hierarchical document structure with configurable detail levels | `doc_id`, `max_depth` (1-10) |
 | **get_page_content** | Extract specific page content from processed documents | `doc_id`, `pages` ("5", "3-7", "1,5,10") |
-| **get_document_structure** | Extract hierarchical document structure with configurable detail levels | `doc_id`, `mode` ("summary", "outline", "full"), `max_depth` (1-10) |
-| **get_document** | Get basic document info (single-file list_documents) | `doc_id` |
-| **list_documents** | List documents with comprehensive status information | `status`, `limit`, `offset` (all optional) |
 | **remove_document** | Permanently delete documents and associated data | `doc_ids` (array of document IDs) |
-| **search_documents** | Search document library using keywords | `query`, `status`, `limit` (optional) |
 
 > **Quick Example**: Process a local PDF with `process_document`, then extract content with `get_page_content` using the returned document ID.
 
