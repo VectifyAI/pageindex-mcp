@@ -28,7 +28,7 @@
     "pageindex",
     "document-processing"
   ],
-  "author": "Yuexun Jiang",
+  "author": "VectifyAI",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.3",
