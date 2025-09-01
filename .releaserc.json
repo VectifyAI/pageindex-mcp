@@ -25,7 +25,7 @@
           {
             "path": "pageindex-mcp.dxt",
             "name": "pageindex-mcp-${nextRelease.version}.dxt",
-            "label": "DXT Extension Package"
+            "label": "pageindex-mcp-${nextRelease.version}.dxt"
           }
         ]
       }
