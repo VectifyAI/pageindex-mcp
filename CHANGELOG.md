@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.1...v1.0.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* add retry logic for improved reliability ([bee02f8](https://github.com/VectifyAI/pageindex-mcp/commit/bee02f8258ec7c426b82fa225eb394eac5b960d7))
+
 ## [1.0.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.0...v1.0.1) (2025-09-01)
 
 
