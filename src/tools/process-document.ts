@@ -205,7 +205,7 @@ async function downloadPdf(url: string): Promise<FileInfo> {
           console.log(
             `Initial request failed for arxiv URL: ${url}, retrying with .pdf suffix`,
           );
-          const retryUrl = url.endsWith('/') ? url + 'pdf' : url + '.pdf';
+          const retryUrl = url.endsWith('/') ? `${url}pdf` : `${url}.pdf`;
 
           try {
             response = await fetchWithRetry(retryUrl);
@@ -247,7 +247,7 @@ async function downloadPdf(url: string): Promise<FileInfo> {
 
       // Ensure filename has .pdf extension if not present
       if (!filename.toLowerCase().endsWith('.pdf')) {
-        filename = filename + '.pdf';
+        filename = `${filename}.pdf`;
       }
 
       const contentType = response.headers.get('content-type');

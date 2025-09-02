@@ -5,7 +5,7 @@
   "type": "module",
   "main": "build/index.js",
   "bin": {
-    "pageindex-mcp": "build/index.js"
+    "pageindex-mcp": "bin/cli.js"
   },
   "scripts": {
     "build": "tsup",
