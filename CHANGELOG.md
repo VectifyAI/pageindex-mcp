@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.1.0...v1.1.1) (2025-09-02)
+
+
+### Bug Fixes
+
+* add dedicated CLI entry point ([d015df4](https://github.com/VectifyAI/pageindex-mcp/commit/d015df495f2ec97d285605f6b7a57517f13e8253))
+
 # [1.1.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.5...v1.1.0) (2025-09-02)
 
 
