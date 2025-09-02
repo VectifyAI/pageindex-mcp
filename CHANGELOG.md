@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.5...v1.1.0) (2025-09-02)
+
+
+### Bug Fixes
+
+* add request timeout to file upload ([a1ffeca](https://github.com/VectifyAI/pageindex-mcp/commit/a1ffeca0dcfd01342761f8fe90e1d39ba0566a0d))
+
+
+### Features
+
+* improve PDF validation and arXiv URL handling with retry logic ([d6ba2f4](https://github.com/VectifyAI/pageindex-mcp/commit/d6ba2f474fb3009c70721b2b630de5799d74f81c))
+
 ## [1.0.5](https://github.com/VectifyAI/pageindex-mcp/compare/v1.0.4...v1.0.5) (2025-09-01)
 
 
