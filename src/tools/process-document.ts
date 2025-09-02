@@ -57,7 +57,7 @@ async function processDocument(
       headers: {
         'Content-Type': fileInfo.mimeType,
       },
-      signal: AbortSignal.timeout(60000),
+      signal: AbortSignal.timeout(2 * 60000),
     });
     if (uploadResponse.status !== 200) {
       throw new Error(
