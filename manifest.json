@@ -2,7 +2,7 @@
   "dxt_version": "0.1",
   "name": "PageIndex",
   "display_name": "PageIndex",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "MCP server for PageIndex",
   "long_description": "This extension provides access to PageIndex's next-generation reasoning-based RAG system. Unlike traditional vector search, PageIndex uses multi-step reasoning to understand and retrieve information from documents.",
   "author": {

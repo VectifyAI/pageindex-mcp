@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.1.1...v1.1.2) (2025-09-02)
+
+
+### Bug Fixes
+
+* replace Unix commands with cross-platform Node.js scripts ([a93b496](https://github.com/VectifyAI/pageindex-mcp/commit/a93b49654148df08f07cc0c55f356754ad5324a0))
+
 ## [1.1.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.1.0...v1.1.1) (2025-09-02)
 
 
