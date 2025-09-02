@@ -19,8 +19,8 @@
     "dxt:build": "tsup",
     "dxt:pack": "npm run dxt:build && dxt pack",
     "dxt:dev": "dxt dev",
-    "postinstall": "test -d .git && simple-git-hooks || true",
-    "prepare": "test -d .git && simple-git-hooks || true"
+    "postinstall": "node -e \"try { require('fs').existsSync('.git') && require('simple-git-hooks')() } catch(e) {}\"",
+    "prepare": "node -e \"try { require('fs').existsSync('.git') && require('simple-git-hooks')() } catch(e) {}\""
   },
   "keywords": [
     "mcp",
