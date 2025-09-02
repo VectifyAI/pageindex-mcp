@@ -70,6 +70,48 @@ async function processDocument(
     });
     return submitResult;
   } catch (error) {
+    // Handle PDF validation errors with specific guidance
+    if (
+      error instanceof Error &&
+      error.message?.includes('Not a valid PDF file')
+    ) {
+      return createErrorResponse(
+        error.message,
+        {},
+        {
+          next_steps: {
+            immediate: 'The file is not a valid PDF document.',
+            options: [
+              'Verify the URL points directly to a PDF file, not a webpage',
+              'Check if the URL requires authentication or specific headers',
+              'Try accessing the URL in a browser to see what content it returns',
+            ],
+            auto_retry: 'You can retry with a valid PDF URL',
+          },
+        },
+      );
+    }
+
+    // Handle arxiv-specific retry failures
+    if (error instanceof Error && error.name === 'ArxivRetryFailed') {
+      return createErrorResponse(
+        error.message,
+        {},
+        {
+          next_steps: {
+            immediate:
+              'Failed to retrieve PDF from arXiv. Both original URL and .pdf suffix were tried.',
+            options: [
+              'Verify the arXiv paper ID is correct (format: YYMM.NNNNN)',
+              'Try the direct PDF URL: https://arxiv.org/pdf/PAPER_ID.pdf',
+              'Check if the paper exists by visiting https://arxiv.org/abs/PAPER_ID',
+            ],
+            auto_retry: 'You can retry with the correct arXiv URL format',
+          },
+        },
+      );
+    }
+
     return createErrorResponse(
       error instanceof Error ? error.message : 'Unknown error occurred',
       {},
@@ -119,6 +161,11 @@ async function readLocalPdf(filePath: string): Promise<FileInfo> {
 
   const buffer = await fs.readFile(resolvedPath);
 
+  // Validate PDF magic bytes
+  if (!buffer.subarray(0, 4).equals(Buffer.from('%PDF'))) {
+    throw new Error(`Not a valid PDF file: ${fileName}`);
+  }
+
   return {
     name: fileName,
     size: buffer.length,
@@ -128,17 +175,56 @@ async function readLocalPdf(filePath: string): Promise<FileInfo> {
 }
 
 /**
- * Download a PDF from a remote URL
+ * Download a PDF from a remote URL with arXiv compatibility and validation
  */
 async function downloadPdf(url: string): Promise<FileInfo> {
   return pRetry(
     async () => {
-      const response = await fetch(url, {
-        signal: AbortSignal.timeout(120000), // 2 minute timeout
-      });
+      const fetchWithRetry = async (fetchUrl: string): Promise<Response> => {
+        const response = await fetch(fetchUrl, {
+          signal: AbortSignal.timeout(120000), // 2 minute timeout
+          headers: {
+            Accept: 'application/pdf, application/octet-stream, */*',
+            'User-Agent': 'Mozilla/5.0 (compatible; PDF-Processor/1.0)',
+          },
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        return response;
+      };
+
+      let response: Response;
+      try {
+        response = await fetchWithRetry(url);
+      } catch (error: any) {
+        // For arxiv.org URLs, try adding .pdf suffix if original request failed
+        if (url.includes('arxiv.org') && !url.endsWith('.pdf')) {
+          console.log(
+            `Initial request failed for arxiv URL: ${url}, retrying with .pdf suffix`,
+          );
+          const retryUrl = url.endsWith('/') ? url + 'pdf' : url + '.pdf';
+
+          try {
+            response = await fetchWithRetry(retryUrl);
+            console.log(
+              `Successfully retrieved PDF from retry URL: ${retryUrl}`,
+            );
+          } catch (retryError: any) {
+            console.log(
+              `Retry with .pdf suffix also failed: ${retryError.message}`,
+            );
+            const enhancedError = new AbortError(
+              `Failed to retrieve PDF from ${url}. Tried both original URL and ${retryUrl}`,
+            );
+            enhancedError.name = 'ArxivRetryFailed';
+            throw enhancedError;
+          }
+        } else {
+          throw error;
+        }
       }
 
       // Check content length
@@ -149,7 +235,7 @@ async function downloadPdf(url: string): Promise<FileInfo> {
 
       // Extract filename from URL or Content-Disposition header
       let filename = path.basename(new URL(url).pathname);
-      const contentDisposition = response.headers['content-disposition'];
+      const contentDisposition = response.headers.get('content-disposition');
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(
           /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
@@ -159,18 +245,34 @@ async function downloadPdf(url: string): Promise<FileInfo> {
         }
       }
 
-      const contentType = response.headers.get('content-type');
-      if (
-        !contentType?.includes('pdf') &&
-        !filename.toLowerCase().endsWith('.pdf')
-      ) {
-        throw new AbortError(
-          `File must be a PDF. Got content-type: ${contentType}, filename: ${filename}`,
-        );
+      // Ensure filename has .pdf extension if not present
+      if (!filename.toLowerCase().endsWith('.pdf')) {
+        filename = filename + '.pdf';
       }
+
+      const contentType = response.headers.get('content-type');
 
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      // Validate PDF magic bytes
+      if (!buffer.subarray(0, 4).equals(Buffer.from('%PDF'))) {
+        throw new AbortError(
+          `Not a valid PDF file. Got content-type: ${contentType}, filename: ${filename}`,
+        );
+      }
+
+      // Additional content-type validation (more lenient after magic byte check)
+      if (
+        contentType &&
+        !contentType.includes('pdf') &&
+        !contentType.includes('octet-stream') &&
+        !contentType.includes('application/pdf')
+      ) {
+        console.warn(
+          `Unexpected content-type: ${contentType}, but PDF magic bytes validated`,
+        );
+      }
 
       return {
         name: filename,
@@ -198,6 +300,11 @@ async function downloadPdf(url: string): Promise<FileInfo> {
                   : error.message,
             );
           }
+        }
+
+        // Don't retry ArxivRetryFailed errors
+        if (error.name === 'ArxivRetryFailed') {
+          throw error;
         }
 
         console.warn(
