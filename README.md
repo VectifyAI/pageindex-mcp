@@ -82,7 +82,7 @@ Alternatively, connect directly to PageIndex without this wrapper:
   "mcpServers": {
     "pageindex": {
       "type": "http",
-      "url": "https://dash.pageindex.ai/api/mcp/mcp",
+      "url": "https://dash.pageindex.ai/api/mcp",
       "headers": {
         "Authorization": "Bearer <YOUR_PAGEINDEX_API_KEY>"
       }

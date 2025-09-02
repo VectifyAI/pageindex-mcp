@@ -30,7 +30,7 @@ export class PageIndexMcpClient {
 
     await pRetry(
       async () => {
-        const streamableHttpUrl = new URL(`${config.apiUrl}/api/mcp/mcp`);
+        const streamableHttpUrl = new URL(`${config.apiUrl}/api/mcp`);
         streamableHttpUrl.searchParams.set('local_upload', '1');
 
         const sseUrl = new URL(`${config.apiUrl}/api/mcp/sse`);
