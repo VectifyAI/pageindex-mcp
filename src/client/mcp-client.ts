@@ -21,6 +21,16 @@ export class PageIndexMcpClient {
   }
 
   /**
+   * Get client identification headers
+   */
+  private getClientHeaders(): Record<string, string> {
+    return {
+      'X-Client-Type': __CLIENT_TYPE__,
+      'X-Client-Version': __VERSION__,
+    };
+  }
+
+  /**
    * Connect to the remote PageIndex MCP server
    */
   async connect(): Promise<void> {
@@ -43,8 +53,12 @@ export class PageIndexMcpClient {
 
         // Try StreamableHTTP first, fallback to SSE for compatibility
         try {
-          // Use simplified authenticated fetch
-          const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
+          // Use simplified authenticated fetch with client headers
+          const clientHeaders = this.getClientHeaders();
+          const authenticatedFetch = createAuthenticatedFetch(
+            this.apiKey,
+            clientHeaders,
+          );
 
           this.transport = new StreamableHTTPClientTransport(
             streamableHttpUrl,
@@ -61,7 +75,11 @@ export class PageIndexMcpClient {
         } catch (_error) {
           try {
             // For SSE transport, we need to pass authenticated fetch as well
-            const authenticatedFetch = createAuthenticatedFetch(this.apiKey);
+            const clientHeaders = this.getClientHeaders();
+            const authenticatedFetch = createAuthenticatedFetch(
+              this.apiKey,
+              clientHeaders,
+            );
             this.transport = new SSEClientTransport(sseUrl, {
               fetch: authenticatedFetch,
             });

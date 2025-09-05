@@ -16,7 +16,7 @@
     "format": "biome format --write .",
     "clean": "rm -rf build",
     "prepublishOnly": "npm run clean && npm run build",
-    "dxt:build": "tsup",
+    "dxt:build": "CLIENT_TYPE=dxt tsup",
     "dxt:pack": "npm run dxt:build && dxt pack",
     "dxt:dev": "dxt dev",
     "postinstall": "node -e \"try { require('fs').existsSync('.git') && require('simple-git-hooks')() } catch(e) {}\"",

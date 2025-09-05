@@ -16,6 +16,21 @@ export class RemoteToolsProxy {
   }
 
   /**
+   * Get client type information
+   */
+  getClientInfo(): {
+    type: 'dxt' | 'npm';
+    version: string;
+    isDxt: boolean;
+  } {
+    return {
+      type: __CLIENT_TYPE__,
+      version: __VERSION__,
+      isDxt: __CLIENT_TYPE__ === 'dxt',
+    };
+  }
+
+  /**
    * Fetch tool definitions from remote MCP server
    */
   async fetchRemoteTools(): Promise<ToolDefinition[]> {

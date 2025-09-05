@@ -36,7 +36,8 @@
       "command": "node",
       "args": ["${__dirname}/build/index.js"],
       "env": {
-        "PAGEINDEX_API_KEY": "${user_config.api_key}"
+        "PAGEINDEX_API_KEY": "${user_config.api_key}",
+        "PAGEINDEX_API_URL": "${user_config.api_url}"
       }
     }
   },
@@ -46,6 +47,13 @@
       "title": "PageIndex API Key",
       "description": "Your PageIndex API key. Get one at https://dash.pageindex.ai/api-keys",
       "required": true
+    },
+    "api_url": {
+      "type": "string",
+      "title": "PageIndex API URL",
+      "description": "PageIndex API base URL (optional, defaults to https://dash.pageindex.ai)",
+      "required": false,
+      "default": "https://dash.pageindex.ai"
     }
   }
 }

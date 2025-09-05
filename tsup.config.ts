@@ -14,6 +14,7 @@ export default defineConfig({
   noExternal: [/.*/], // Bundle all dependencies
   define: {
     __VERSION__: `"${packageJson.version}"`,
+    __CLIENT_TYPE__: `"${process.env.CLIENT_TYPE || 'npm'}"`,
   },
   platform: 'node',
   onSuccess: async () => {
