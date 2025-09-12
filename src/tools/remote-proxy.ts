@@ -53,7 +53,7 @@ export class RemoteToolsProxy {
 
       return this.remoteTools;
     } catch (error) {
-      console.error('Failed to fetch remote tools:', error);
+      console.error(`Failed to fetch remote tools: ${error}\n`);
       return [];
     }
   }

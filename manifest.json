@@ -4,7 +4,7 @@
   "display_name": "PageIndex",
   "version": "1.1.2",
   "description": "MCP server for PageIndex",
-  "long_description": "This extension provides access to PageIndex's next-generation reasoning-based RAG system. Unlike traditional vector search, PageIndex uses multi-step reasoning to understand and retrieve information from documents.",
+  "long_description": "This extension provides access to PageIndex's next-generation reasoning-based RAG system. Unlike traditional vector search, PageIndex uses multi-step reasoning to understand and retrieve information from documents. Authentication is handled automatically via OAuth 2.1.",
   "author": {
     "name": "VectifyAI",
     "url": "https://github.com/VectifyAI"
@@ -19,7 +19,8 @@
     "document-processing",
     "pdf",
     "ocr",
-    "reasoning-rag"
+    "reasoning-rag",
+    "oauth"
   ],
   "license": "MIT",
   "compatibility": {
@@ -34,26 +35,7 @@
     "entry_point": "build/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/build/index.js"],
-      "env": {
-        "PAGEINDEX_API_KEY": "${user_config.api_key}",
-        "PAGEINDEX_API_URL": "${user_config.api_url}"
-      }
-    }
-  },
-  "user_config": {
-    "api_key": {
-      "type": "string",
-      "title": "PageIndex API Key",
-      "description": "Your PageIndex API key. Get one at https://dash.pageindex.ai/api-keys",
-      "required": true
-    },
-    "api_url": {
-      "type": "string",
-      "title": "PageIndex API URL",
-      "description": "PageIndex API base URL (optional, defaults to https://dash.pageindex.ai)",
-      "required": false,
-      "default": "https://dash.pageindex.ai"
+      "args": ["${__dirname}/build/index.js"]
     }
   }
 }

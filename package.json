@@ -32,9 +32,12 @@
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.3",
+    "@types/lodash": "^4.17.20",
     "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
     "p-retry": "^7.0.0",
+    "pkce-challenge": "^5.0.0",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.24.6"
   },
