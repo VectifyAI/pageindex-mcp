@@ -83,7 +83,7 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
   "mcpServers": {
     "pageindex": {
       "type": "http",
-      "url": "https://mcp.pageindex.ai"
+      "url": "https://mcp.pageindex.ai/mcp"
     }
   }
 }
@@ -93,7 +93,6 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
 1. The MCP client will automatically handle the OAuth flow
 2. You'll be redirected to authorize the application in your browser
 3. Authentication tokens are managed by the MCP client
-4. Automatic token refresh is handled by the server
 
 **For clients that don't support HTTP MCP servers:**
 
@@ -104,7 +103,7 @@ If your MCP client doesn't support HTTP servers directly, you can use [mcp-remot
   "mcpServers": {
     "pageindex": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.pageindex.ai"]
+      "args": ["-y", "mcp-remote", "https://mcp.pageindex.ai/mcp"]
     }
   }
 }
