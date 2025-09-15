@@ -1,23 +1,59 @@
+import {
+  type OAuthClientProvider,
+  UnauthorizedError,
+} from '@modelcontextprotocol/sdk/client/auth.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import pRetry, { AbortError } from 'p-retry';
-import { CONFIG as config } from '../config.js';
-import { createAuthenticatedFetch } from './auth.js';
+import pRetry from 'p-retry';
+import { CONFIG } from '../config.js';
+import { PageIndexOAuthProvider } from './oauth-provider.js';
 
 /**
- * Wrapper for MCP Client to connect to remote PageIndex MCP server
+ * Wrapper for MCP Client to connect to remote PageIndex MCP server with OAuth authentication
  */
 export class PageIndexMcpClient {
   private client: Client | null = null;
   private transport: StreamableHTTPClientTransport | SSEClientTransport | null =
     null;
-  private apiKey: string;
-  private connected = false;
+  private oauthProvider: OAuthClientProvider;
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
+  constructor(oauthProvider?: OAuthClientProvider) {
+    if (oauthProvider) {
+      this.oauthProvider = oauthProvider;
+    } else {
+      // Create default OAuth provider with built-in configuration
+      this.oauthProvider = new PageIndexOAuthProvider(
+        'http://localhost:8090/callback',
+        {
+          client_name: __CLIENT_NAME__,
+          redirect_uris: ['http://localhost:8090/callback'],
+          token_endpoint_auth_method: 'none', // Public client by default
+          grant_types: ['authorization_code'],
+          response_types: ['code'],
+          scope: 'mcp:access',
+        },
+      );
+    }
+  }
+
+  /**
+   * Create a PageIndexMcpClient that prioritizes stored client information
+   */
+  static async createWithStoredClientInfo(): Promise<PageIndexMcpClient> {
+    const storedClientInfo = await PageIndexOAuthProvider.getStoredClientInfo();
+    if (storedClientInfo) {
+      const oauthProvider = new PageIndexOAuthProvider(
+        'http://localhost:8090/callback',
+        storedClientInfo,
+      );
+      // Load stored tokens and client info to sync internal state
+      await oauthProvider.loadFromStorage();
+      return new PageIndexMcpClient(oauthProvider);
+    } else {
+      return new PageIndexMcpClient();
+    }
   }
 
   /**
@@ -31,90 +67,87 @@ export class PageIndexMcpClient {
   }
 
   /**
-   * Connect to the remote PageIndex MCP server
+   * Create transport instance with authProvider
    */
-  async connect(): Promise<void> {
-    if (this.connected) {
-      return;
-    }
+  private async createTransport(): Promise<
+    StreamableHTTPClientTransport | SSEClientTransport
+  > {
+    const streamableHttpUrl = new URL(`${CONFIG.apiUrl}/mcp`);
+    streamableHttpUrl.searchParams.set('local_upload', '1');
 
-    await pRetry(
-      async () => {
-        const streamableHttpUrl = new URL(`${config.apiUrl}/api/mcp`);
-        streamableHttpUrl.searchParams.set('local_upload', '1');
+    const sseUrl = new URL(`${CONFIG.apiUrl}/mcp/sse`);
+    sseUrl.searchParams.set('local_upload', '1');
 
-        const sseUrl = new URL(`${config.apiUrl}/api/mcp/sse`);
-        sseUrl.searchParams.set('local_upload', '1');
-
-        this.client = new Client({
-          name: 'pageindex-mcp',
-          version: __VERSION__,
-        });
-
-        // Try StreamableHTTP first, fallback to SSE for compatibility
-        try {
-          // Use simplified authenticated fetch with client headers
-          const clientHeaders = this.getClientHeaders();
-          const authenticatedFetch = createAuthenticatedFetch(
-            this.apiKey,
-            clientHeaders,
-          );
-
-          this.transport = new StreamableHTTPClientTransport(
-            streamableHttpUrl,
-            {
-              fetch: authenticatedFetch,
-              requestInit: {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              },
-            },
-          );
-          await this.client.connect(this.transport);
-        } catch (_error) {
-          try {
-            // For SSE transport, we need to pass authenticated fetch as well
-            const clientHeaders = this.getClientHeaders();
-            const authenticatedFetch = createAuthenticatedFetch(
-              this.apiKey,
-              clientHeaders,
-            );
-            this.transport = new SSEClientTransport(sseUrl, {
-              fetch: authenticatedFetch,
-            });
-            await this.client.connect(this.transport);
-          } catch (sseError) {
-            throw new AbortError(
-              `Failed to connect to PageIndex MCP server: ${sseError}`,
-            );
-          }
-        }
-
-        this.connected = true;
-      },
-      {
-        retries: 3,
-        factor: 2,
-        minTimeout: 1000,
-        maxTimeout: 8000,
-        onFailedAttempt: (error) => {
-          console.warn(
-            `Connection attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
-          );
+    // Try StreamableHTTP first, fallback to SSE for compatibility
+    try {
+      return new StreamableHTTPClientTransport(streamableHttpUrl, {
+        authProvider: this.oauthProvider,
+        requestInit: {
+          headers: {
+            ...this.getClientHeaders(),
+            'Content-Type': 'application/json',
+          },
         },
-      },
-    );
+      });
+    } catch {
+      return new SSEClientTransport(sseUrl, {
+        authProvider: this.oauthProvider,
+      });
+    }
+  }
+
+  /**
+   * Attempt connection with OAuth authentication and recursive retry
+   */
+  private async attemptConnection(): Promise<void> {
+    try {
+      // Create transport with authProvider
+      const transport = await this.createTransport();
+      this.transport = transport;
+
+      // Create client
+      this.client = new Client({
+        name: 'pageindex-mcp',
+        version: __VERSION__,
+      });
+
+      // Attempt connection
+      await this.client.connect(transport);
+
+      console.error('Connected to PageIndex MCP server successfully.\n');
+    } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        console.error('Authentication required, starting OAuth flow...\n');
+
+        if (this.oauthProvider instanceof PageIndexOAuthProvider) {
+          // Wait for OAuth callback
+          const authCode = await this.oauthProvider.waitForOAuthCallback();
+
+          // Use finishAuth to complete authentication
+          if (this.transport) {
+            await this.transport.finishAuth(authCode);
+          }
+
+          console.error(
+            'OAuth authentication completed, retrying connection...\n',
+          );
+
+          // Recursive retry
+          await this.attemptConnection();
+        } else {
+          throw new Error('OAuth provider does not support callback waiting');
+        }
+      } else {
+        // Re-throw other errors
+        throw error;
+      }
+    }
   }
 
   /**
    * Call a tool on the remote MCP server
    */
   async callTool(name: string, params: any): Promise<CallToolResult> {
-    if (!this.client || !this.connected) {
-      throw new Error('Client not connected. Call connect() first.');
-    }
-
     return pRetry(
       async () => {
         if (!this.client) {
@@ -132,8 +165,8 @@ export class PageIndexMcpClient {
         minTimeout: 500,
         maxTimeout: 3000,
         onFailedAttempt: (error) => {
-          console.warn(
-            `Tool call "${name}" attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
+          console.error(
+            `Tool call "${name}" attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.\n`,
           );
         },
       },
@@ -141,15 +174,30 @@ export class PageIndexMcpClient {
   }
 
   /**
+   * Connect using OAuth authentication with finishAuth pattern
+   */
+  public async connect(): Promise<void> {
+    await this.attemptConnection();
+  }
+
+  /**
    * List available tools on the remote server
    */
   async listTools() {
-    if (!this.client || !this.connected) {
+    if (!this.client) {
       throw new Error('Client not connected. Call connect() first.');
     }
 
     const tools = await this.client.listTools();
     return tools;
+  }
+
+  /**
+   * Reconnect to the server
+   */
+  async reconnect(): Promise<void> {
+    await this.close();
+    await this.connect();
   }
 
   /**
@@ -164,14 +212,5 @@ export class PageIndexMcpClient {
     if (this.client) {
       this.client = null;
     }
-
-    this.connected = false;
-  }
-
-  /**
-   * Check if client is connected
-   */
-  isConnected(): boolean {
-    return this.connected;
   }
 }

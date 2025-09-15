@@ -20,7 +20,7 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 - **Local PDF Processing**: Upload local PDF files directly without manual uploads
 - **URL Support**: Process documents from URLs
 - **Full PageIndex Integration**: Access all PageIndex capabilities (OCR, tree generation, reasoning-based retrieval)
-- **Secure Authentication**: API key authentication with PageIndex platform
+- **Secure OAuth Authentication**: OAuth 2.1 with PKCE and automatic token refresh
 - **TypeScript**: Full type safety with MCP SDK
 - **Desktop Extension (DXT)**: One-click installation for Claude Desktop with secure configuration
 
@@ -28,11 +28,7 @@ PageIndex is a revolutionary document processing system that uses **reasoning-ba
 
 ### Getting Started
 
-First, you'll need to create an API key:
-
-1. Visit https://dash.pageindex.ai/api-keys
-2. Create a new API key for your application
-3. Copy the API key for use in the configuration below
+The PageIndex MCP server uses OAuth 2.1 authentication for secure access. When you first run the server, it will guide you through the authentication process by opening your browser to authorize the application.
 
 ### For Claude Desktop (Recommended)
 
@@ -40,12 +36,12 @@ First, you'll need to create an API key:
 
 1. Download the latest `.dxt` file from [Releases](https://github.com/VectifyAI/pageindex-mcp/releases)
 2. Double-click the `.dxt` file to install automatically in Claude Desktop
-3. Enter your PageIndex API key in the simple configuration interface
+3. The OAuth authentication will be handled automatically when you first use the extension
 
 **Benefits of DXT Installation:**
 
 - **No technical setup** - just download and double-click
-- **Secure configuration** - API keys stored securely by Claude Desktop
+- **Secure OAuth authentication** - handled automatically through your browser
 - **Automatic updates** - extensions update seamlessly
 - **Full local PDF support** - upload and process PDFs directly from your computer
 
@@ -64,34 +60,57 @@ Add to your MCP configuration:
   "mcpServers": {
     "pageindex": {
       "command": "npx",
-      "args": ["-y", "pageindex-mcp"],
-      "env": {
-        "PAGEINDEX_API_KEY": "<YOUR_PAGEINDEX_API_KEY>"
-      }
+      "args": ["-y", "pageindex-mcp"]
     }
   }
 }
 ```
 
-#### Option 2: Remote MCP Server
+**Authentication Process:**
+1. When you first connect, the server will automatically open your browser for OAuth authentication
+2. Log in to your PageIndex account and authorize the application
+3. The authentication tokens are securely stored locally and automatically refreshed
+4. Subsequent connections will use the stored credentials automatically
 
-Alternatively, connect directly to PageIndex without this wrapper:
+> **Note**: This local server provides full PDF upload capabilities and handles all authentication automatically.
+
+#### Option 2: Direct Connection to PageIndex
+
+Connect directly to the PageIndex OAuth-enabled MCP server:
 
 ```json
 {
   "mcpServers": {
     "pageindex": {
       "type": "http",
-      "url": "https://dash.pageindex.ai/api/mcp",
-      "headers": {
-        "Authorization": "Bearer <YOUR_PAGEINDEX_API_KEY>"
-      }
+      "url": "https://mcp.pageindex.ai"
     }
   }
 }
 ```
 
-> **Note**: Option 1 provides local PDF upload capabilities, while Option 2 connects directly to PageIndex but requires manual PDF uploads via the dashboard.
+**Authentication Process:**
+1. The MCP client will automatically handle the OAuth flow
+2. You'll be redirected to authorize the application in your browser
+3. Authentication tokens are managed by the MCP client
+4. Automatic token refresh is handled by the server
+
+**For clients that don't support HTTP MCP servers:**
+
+If your MCP client doesn't support HTTP servers directly, you can use [mcp-remote](https://github.com/geelen/mcp-remote) as a bridge:
+
+```json
+{
+  "mcpServers": {
+    "pageindex": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.pageindex.ai"]
+    }
+  }
+}
+```
+
+> **Note**: Option 1 provides local PDF upload capabilities, while Option 2 only supports PDF processing via URLs (no local file uploads).
 
 ## Available Tools
 

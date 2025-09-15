@@ -202,24 +202,27 @@ async function downloadPdf(url: string): Promise<FileInfo> {
       } catch (error: any) {
         // For arxiv.org URLs, try adding .pdf suffix if original request failed
         if (url.includes('arxiv.org') && !url.endsWith('.pdf')) {
-          console.log(
-            `Initial request failed for arxiv URL: ${url}, retrying with .pdf suffix`,
+          console.error(
+            `Initial request failed for arxiv URL: ${url}, retrying with .pdf suffix\n`,
           );
           const retryUrl = url.endsWith('/') ? `${url}pdf` : `${url}.pdf`;
 
           try {
             response = await fetchWithRetry(retryUrl);
-            console.log(
-              `Successfully retrieved PDF from retry URL: ${retryUrl}`,
+            console.error(
+              `Successfully retrieved PDF from retry URL: ${retryUrl}\n`,
             );
           } catch (retryError: any) {
-            console.log(
-              `Retry with .pdf suffix also failed: ${retryError.message}`,
+            console.error(
+              `Retry with .pdf suffix also failed: ${retryError.message}\n`,
             );
             const enhancedError = new AbortError(
               `Failed to retrieve PDF from ${url}. Tried both original URL and ${retryUrl}`,
             );
-            enhancedError.name = 'ArxivRetryFailed';
+            Object.defineProperty(enhancedError, 'name', {
+              value: 'ArxivRetryFailed',
+              configurable: true,
+            });
             throw enhancedError;
           }
         } else {
@@ -269,8 +272,8 @@ async function downloadPdf(url: string): Promise<FileInfo> {
         !contentType.includes('octet-stream') &&
         !contentType.includes('application/pdf')
       ) {
-        console.warn(
-          `Unexpected content-type: ${contentType}, but PDF magic bytes validated`,
+        console.error(
+          `Unexpected content-type: ${contentType}, but PDF magic bytes validated\n`,
         );
       }
 
@@ -303,12 +306,12 @@ async function downloadPdf(url: string): Promise<FileInfo> {
         }
 
         // Don't retry ArxivRetryFailed errors
-        if (error.name === 'ArxivRetryFailed') {
+        if ((error as any).name === 'ArxivRetryFailed') {
           throw error;
         }
 
-        console.warn(
-          `PDF download attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left. URL: ${url}`,
+        console.error(
+          `PDF download attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left. URL: ${url}\n`,
         );
       },
     },

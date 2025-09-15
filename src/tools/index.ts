@@ -5,14 +5,9 @@ import { processDocumentTool } from './process-document.js';
 import type { ToolDefinition } from './types.js';
 
 export { RemoteToolsProxy } from './remote-proxy.js';
-// Re-export ToolDefinition type
 export { ToolDefinition } from './types.js';
 
-// Local tools that require file system access or special local processing
 const localTools: ToolDefinition[] = [processDocumentTool];
-
-// Combined tools (local + remote)
-// This will be populated by the server after fetching remote tools
 let tools: ToolDefinition[] = [...localTools];
 
 /**
@@ -47,7 +42,6 @@ export async function executeTool(
   if (!tool) {
     throw new Error(`Tool not found: ${name}`);
   }
-  // Validate parameters
   try {
     const validatedParams = tool.inputSchema.parse(params);
     return await tool.handler(validatedParams, client);

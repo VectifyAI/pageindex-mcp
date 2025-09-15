@@ -11,15 +11,24 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.17.3
         version: 1.17.4
+      '@types/lodash':
+        specifier: ^4.17.20
+        version: 4.17.20
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       mime-types:
         specifier: ^2.1.35
         version: 2.1.35
       p-retry:
         specifier: ^7.0.0
         version: 7.0.0
+      pkce-challenge:
+        specifier: ^5.0.0
+        version: 5.0.0
       zod:
         specifier: ^3.23.8
         version: 3.25.76
@@ -613,6 +622,9 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
+
+  '@types/lodash@4.17.20':
+    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/mime-types@2.1.4':
     resolution: {integrity: sha512-lfU4b34HOri+kAY5UheuFMWPDOI+OPceBSHZKp69gEyTL/mmJ4cnU6Y/rlme3UL3GyOn6Y42hyIEw0/q8sWx5w==}
@@ -2847,6 +2859,8 @@ snapshots:
   '@sindresorhus/merge-streams@4.0.0': {}
 
   '@types/estree@1.0.8': {}
+
+  '@types/lodash@4.17.20': {}
 
   '@types/mime-types@2.1.4': {}
 

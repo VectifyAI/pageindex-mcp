@@ -15,6 +15,7 @@ export default defineConfig({
   define: {
     __VERSION__: `"${packageJson.version}"`,
     __CLIENT_TYPE__: `"${process.env.CLIENT_TYPE || 'npm'}"`,
+    __CLIENT_NAME__: `"${process.env.CLIENT_TYPE === 'dxt' ? 'Claude Desktop' : 'PageIndex MCP'}"`,
   },
   platform: 'node',
   onSuccess: async () => {
