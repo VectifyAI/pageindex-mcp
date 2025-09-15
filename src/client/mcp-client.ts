@@ -32,7 +32,7 @@ export class PageIndexMcpClient {
           token_endpoint_auth_method: 'none', // Public client by default
           grant_types: ['authorization_code'],
           response_types: ['code'],
-          scope: 'read write',
+          scope: 'mcp:access',
         },
       );
     }
