@@ -61,7 +61,7 @@ async function processDocument(
     });
     if (uploadResponse.status !== 200) {
       throw new Error(
-        `File upload failed with status ${uploadResponse.status}`,
+        `Document upload failed with status ${uploadResponse.status}`,
       );
     }
 
@@ -80,9 +80,9 @@ async function processDocument(
         {},
         {
           next_steps: {
-            immediate: 'The file is not a valid PDF document.',
+            immediate: 'The document is not a valid PDF.',
             options: [
-              'Verify the URL points directly to a PDF file, not a webpage',
+              'Verify the URL points directly to a PDF document, not a webpage',
               'Check if the URL requires authentication or specific headers',
               'Try accessing the URL in a browser to see what content it returns',
             ],
@@ -118,11 +118,11 @@ async function processDocument(
       {
         next_steps: {
           immediate:
-            'PDF processing failed. Please check the file/URL and try again.',
+            'PDF processing failed. Please check the document/URL and try again.',
           options: [
-            'Ensure the file is a valid PDF',
-            'Check file size is under 100MB',
-            'Verify the URL is accessible (for remote files)',
+            'Ensure the document is a valid PDF',
+            'Check document size is under 100MB',
+            'Verify the URL is accessible (for remote documents)',
             'Try with a different PDF document',
           ],
           auto_retry:
@@ -151,19 +151,19 @@ async function readLocalPdf(filePath: string): Promise<FileInfo> {
   const maxSize = 100 * 1024 * 1024;
   if (stats.size > maxSize) {
     throw new Error(
-      `File too large: ${stats.size} bytes (max: ${maxSize} bytes)`,
+      `Document too large: ${stats.size} bytes (max: ${maxSize} bytes)`,
     );
   }
   const fileName = path.basename(resolvedPath);
   if (!fileName.toLowerCase().endsWith('.pdf')) {
-    throw new Error(`File must be a PDF: ${fileName}`);
+    throw new Error(`Document must be a PDF: ${fileName}`);
   }
 
   const buffer = await fs.readFile(resolvedPath);
 
   // Validate PDF magic bytes
   if (!buffer.subarray(0, 4).equals(Buffer.from('%PDF'))) {
-    throw new Error(`Not a valid PDF file: ${fileName}`);
+    throw new Error(`Not a valid PDF document: ${fileName}`);
   }
 
   return {
@@ -233,7 +233,9 @@ async function downloadPdf(url: string): Promise<FileInfo> {
       // Check content length
       const contentLength = response.headers.get('content-length');
       if (contentLength && parseInt(contentLength, 10) > 100 * 1024 * 1024) {
-        throw new Error(`File too large: ${contentLength} bytes (max: 100MB)`);
+        throw new Error(
+          `Document too large: ${contentLength} bytes (max: 100MB)`,
+        );
       }
 
       // Extract filename from URL or Content-Disposition header
@@ -261,7 +263,7 @@ async function downloadPdf(url: string): Promise<FileInfo> {
       // Validate PDF magic bytes
       if (!buffer.subarray(0, 4).equals(Buffer.from('%PDF'))) {
         throw new AbortError(
-          `Not a valid PDF file. Got content-type: ${contentType}, filename: ${filename}`,
+          `Not a valid PDF document. Got content-type: ${contentType}, filename: ${filename}`,
         );
       }
 
