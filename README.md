@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://pageindex.ai/mcp">
-    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="80%">
+    <img src="https://docs.pageindex.ai/images/general/mcp_banner.jpg">
   </a>
 </div>
 
@@ -11,6 +11,12 @@ A Model Context Protocol (MCP) server for **PageIndex** - Next-Generation Reason
 For an overview and quick start, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
 
 ## What is PageIndex?
+
+<div align="center">
+  <a href="https://pageindex.ai/mcp">
+    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="80%">
+  </a>
+</div>
 
 PageIndex is a revolutionary document processing system that uses **reasoning-based RAG** instead of traditional vector-based similarity search. Unlike conventional RAG systems that rely on semantic similarity, PageIndex uses multi-step reasoning and tree search to retrieve information like a human expert would.
 
