@@ -1,6 +1,7 @@
-
 <div align="center">
-    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="90%">
+  <a href="https://pageindex.ai/mcp">
+    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="80%">
+  </a>
 </div>
 
 # PageIndex MCP
