@@ -1,6 +1,13 @@
+
+<div align="center">
+    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="90%">
+</div>
+
 # PageIndex MCP
 
 A Model Context Protocol (MCP) server for **PageIndex** - Next-Generation Reasoning-based RAG.
+
+For an overview and quick start, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
 
 ## What is PageIndex?
 
