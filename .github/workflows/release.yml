@@ -46,6 +46,12 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Pack DXT
+        run: pnpm run dxt:pack
+
+      - name: Pack MCPB
+        run: pnpm run mcpb:pack
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

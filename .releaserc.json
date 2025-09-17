@@ -8,7 +8,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node scripts/sync-manifest-version.js && pnpm run dxt:build && pnpm run dxt:pack"
+        "prepareCmd": "node scripts/sync-manifest-version.js && pnpm run dxt:pack && pnpm run mcpb:pack"
       }
     ],
     [
@@ -26,6 +26,11 @@
             "path": "pageindex-mcp.dxt",
             "name": "pageindex-mcp-${nextRelease.version}.dxt",
             "label": "pageindex-mcp-${nextRelease.version}.dxt"
+          },
+          {
+            "path": "pageindex-mcp.mcpb",
+            "name": "pageindex-mcp-${nextRelease.version}.mcpb",
+            "label": "pageindex-mcp-${nextRelease.version}.mcpb"
           }
         ]
       }

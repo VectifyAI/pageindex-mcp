@@ -19,6 +19,8 @@
     "dxt:build": "CLIENT_TYPE=dxt tsup",
     "dxt:pack": "npm run dxt:build && dxt pack",
     "dxt:dev": "dxt dev",
+    "mcpb:build": "CLIENT_TYPE=mcpb tsup",
+    "mcpb:pack": "npm run mcpb:build && mcpb pack",
     "postinstall": "node -e \"try { require('fs').existsSync('.git') && require('simple-git-hooks')() } catch(e) {}\"",
     "prepare": "node -e \"try { require('fs').existsSync('.git') && require('simple-git-hooks')() } catch(e) {}\""
   },
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@anthropic-ai/dxt": "^0.2.6",
+    "@anthropic-ai/mcpb": "^1.1.0",
     "@biomejs/biome": "^2.2.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^7.1.0",
