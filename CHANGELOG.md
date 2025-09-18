@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.3.0...v1.4.0) (2025-09-18)
+
+
+### Features
+
+* add MCPB bundle support ([979cd41](https://github.com/VectifyAI/pageindex-mcp/commit/979cd416aaf23c9f10b2612a83c58cfc141228bd))
+
 # [1.4.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.3.0...v1.4.0) (2025-09-17)
 
 
