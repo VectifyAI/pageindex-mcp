@@ -12,13 +12,15 @@ Want to chat with PDF on Claude but got limit reached error? You can add your fi
 - Free 1000 pages
 - Unlimited conversations
 
+For more information about PageIndex MCP, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
+
+
 <p align="center">
   <a href="https://pageindex.ai/mcp">
     <img src="https://github.com/user-attachments/assets/d807d506-131d-4c7b-837c-96ab1adb2271">
   </a>
 </p>
   
-For more information about PageIndex MCP, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
 
 # What is PageIndex?
 
