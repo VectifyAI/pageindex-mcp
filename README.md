@@ -6,6 +6,8 @@
 
 # PageIndex MCP
 
+[![PageIndex MCP Homepage](https://img.shields.io/badge/PageIndex_MCP_Homepage-0EA5E9?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)
+
 Want to chat with PDF on Claude but got limit reached error? You can add your file to PageIndex to seamlessly chat with long PDFs on your Claude desktop.
 
 - Support local and online PDFs
