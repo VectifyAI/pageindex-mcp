@@ -48,11 +48,13 @@ See [PageIndex MCP](https://pageindex.ai/mcp) for full video guidances.
 
 ### 1. For Claude Desktop (Recommended)
 
-**One-Click Installation with Desktop Extension (DXT):**
+**One-Click Installation with Desktop Extension (MCPB):**
 
-1. Download the latest `.dxt` file from [Releases](https://github.com/VectifyAI/pageindex-mcp/releases)
-2. Double-click the `.dxt` file to install automatically in Claude Desktop
+1. Download the latest `.mcpb` file from [Releases](https://github.com/VectifyAI/pageindex-mcp/releases)
+2. Double-click the `.mcpb` file to install automatically in Claude Desktop
 3. The OAuth authentication will be handled automatically when you first use the extension
+
+> **Note**: Claude Desktop Extensions now use the `.mcpb` (MCP Bundle) file extension. Existing `.dxt` extensions will continue to work, but we recommend using `.mcpb` for new installations.
 
 This is the easiest way to get started with PageIndex's reasoning-based RAG capabilities.
 
