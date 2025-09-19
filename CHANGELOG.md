@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.1...v1.4.2) (2025-09-19)
+
+
+### Bug Fixes
+
+* update client name configuration ([5f17275](https://github.com/VectifyAI/pageindex-mcp/commit/5f17275a92c592c9a6609f890869d9c94dbeb843))
+
 ## [1.4.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.0...v1.4.1) (2025-09-19)
 
 
