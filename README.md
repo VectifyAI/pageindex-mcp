@@ -10,15 +10,15 @@
 [![PageIndex Homepage](https://img.shields.io/badge/PageIndex_Homepage-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)&nbsp;&nbsp;
 [![PageIndex GitHub](https://img.shields.io/badge/PageIndex_GitHub-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/VectifyAI/PageIndex)
 
+Want to chat with PDF on Claude but got limit reached error? You can add your file to PageIndex to seamlessly chat with long PDFs on your Claude desktop.  
 
-Want to chat with PDF on Claude but got limit reached error? You can add your file to PageIndex to seamlessly chat with long PDFs on your Claude desktop.
+✨ Chat to long PDFs the **human-like, reasoning-based way** ✨
 
-- Support local and online PDFs
-- Free 1000 pages
-- Unlimited conversations
+- Support local and online PDFs  
+- Free 1000 pages  
+- Unlimited conversations  
 
 For more information about PageIndex MCP, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
-
 
 <p align="center">
   <a href="https://pageindex.ai/mcp">
@@ -37,7 +37,7 @@ For more information about PageIndex MCP, check out the [PageIndex MCP](https://
 
 PageIndex is a vectorless **reasoning-based RAG** system which uses multi-step reasoning and tree search to retrieve information like a human expert would. It has the following properties:
 
-- **Higher Accuracy**: Relevance beyond similarity -
+- **Higher Accuracy**: Relevance beyond similarity
 - **Better Transparency**: Clear reasoning trajectory with traceable search paths
 - **Like A Human**: Retrieve information like a human expert navigates documents
 - **No Vector DB**: No extra infrastructure overhead
