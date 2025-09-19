@@ -21,12 +21,10 @@ export class RemoteToolsProxy {
   getClientInfo(): {
     type: 'dxt' | 'npm';
     version: string;
-    isDxt: boolean;
   } {
     return {
       type: __CLIENT_TYPE__,
       version: __VERSION__,
-      isDxt: __CLIENT_TYPE__ === 'dxt',
     };
   }
 

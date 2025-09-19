@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import open from 'open';
 import pRetry, { AbortError } from 'p-retry';
 import { z } from 'zod';
 import type { PageIndexMcpClient } from '../client/mcp-client.js';
@@ -68,6 +69,15 @@ async function processDocument(
     const submitResult = await mcpClient.callTool('submit_document', {
       file_name: uploadInfo.file_name,
     });
+
+    if (submitResult.isError) {
+      const [content] = submitResult.content || [];
+      const result = JSON.parse((content?.text as string) || '{}');
+      if (result.open_url) {
+        open(result.open_url);
+      }
+    }
+
     return submitResult;
   } catch (error) {
     // Handle PDF validation errors with specific guidance
