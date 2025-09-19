@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.0...v1.4.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* open pricing page when encountered usage limit error ([919c509](https://github.com/VectifyAI/pageindex-mcp/commit/919c509740fd11879ce4756f2e5762ceb5021b9f))
+
 # [1.4.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.3.0...v1.4.0) (2025-09-18)
 
 
