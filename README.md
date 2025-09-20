@@ -6,8 +6,8 @@
 
 # PageIndex MCP
 
-[![MCP Homepage](https://img.shields.io/badge/MCP_Homepage-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;
-[![PageIndex Homepage](https://img.shields.io/badge/PageIndex_Homepage-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)&nbsp;&nbsp;
+[![PageIndex MCP Home](https://img.shields.io/badge/PageIndex_MCP_Home-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;
+[![PageIndex Home](https://img.shields.io/badge/PageIndex_Home-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)&nbsp;&nbsp;
 [![PageIndex GitHub](https://img.shields.io/badge/PageIndex_GitHub-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/VectifyAI/PageIndex)
 
 Want to chat with PDF on Claude but got limit reached error? You can add your file to PageIndex to seamlessly chat with long PDFs on your Claude desktop.  
