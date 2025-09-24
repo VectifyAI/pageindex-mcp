@@ -2,10 +2,19 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
+  ListResourcesRequestSchema,
+  ListResourceTemplatesRequestSchema,
   ListToolsRequestSchema,
+  ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { PageIndexMcpClient } from './client/mcp-client.js';
+import {
+  listResources,
+  listResourceTemplates,
+  readResource,
+  updateResourcesWithRemote,
+} from './resources/index.js';
 import {
   executeTool,
   getTools,
@@ -30,6 +39,7 @@ class PageIndexStdioServer {
       {
         capabilities: {
           tools: {},
+          resources: {},
         },
       },
     );
@@ -93,6 +103,89 @@ class PageIndexStdioServer {
         };
       }
     });
+
+    // Resource handlers
+    this.server.setRequestHandler(
+      ListResourcesRequestSchema,
+      async (request) => {
+        // Initialize remote connection on first list resources request
+        if (!this.mcpClient) {
+          await this.connectToRemoteServer();
+        }
+
+        // biome-ignore lint/style/noNonNullAssertion: mcpClient is ensured to be non-null here
+        updateResourcesWithRemote(this.mcpClient!);
+
+        try {
+          return await listResources(request.params);
+        } catch (error) {
+          throw {
+            code: -32603,
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Failed to list resources',
+            data: { cursor: request.params?.cursor },
+          };
+        }
+      },
+    );
+
+    this.server.setRequestHandler(
+      ReadResourceRequestSchema,
+      async (request) => {
+        // Ensure connection is established
+        if (!this.mcpClient) {
+          await this.connectToRemoteServer();
+        }
+
+        // biome-ignore lint/style/noNonNullAssertion: mcpClient is ensured to be non-null here
+        updateResourcesWithRemote(this.mcpClient!);
+
+        try {
+          return await readResource(request.params);
+        } catch (error) {
+          // Re-throw MCP-formatted errors directly
+          if (typeof error === 'object' && error !== null && 'code' in error) {
+            throw error;
+          }
+
+          throw {
+            code: -32603,
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Failed to read resource',
+            data: { uri: request.params.uri },
+          };
+        }
+      },
+    );
+
+    this.server.setRequestHandler(
+      ListResourceTemplatesRequestSchema,
+      async () => {
+        // Ensure connection is established
+        if (!this.mcpClient) {
+          await this.connectToRemoteServer();
+        }
+
+        // biome-ignore lint/style/noNonNullAssertion: mcpClient is ensured to be non-null here
+        updateResourcesWithRemote(this.mcpClient!);
+
+        try {
+          return await listResourceTemplates();
+        } catch (error) {
+          throw {
+            code: -32603,
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Failed to list resource templates',
+          };
+        }
+      },
+    );
 
     this.server.onerror = (error) => {
       console.error(`MCP Server error: ${error}\n`);

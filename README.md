@@ -113,7 +113,6 @@ If your MCP client doesn't support HTTP servers directly, you can use [mcp-remot
 > **Note**: Option 1 provides local PDF upload capabilities, while Option 2 only supports PDF processing via URLs (no local file uploads).
 
 
-
 ## License
 
 This project is licensed under the terms of the MIT open source license. Please refer to [MIT](./LICENSE) for the full terms.
