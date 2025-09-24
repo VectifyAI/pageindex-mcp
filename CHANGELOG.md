@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.2...v1.5.0) (2025-09-24)
+
+
+### Features
+
+* add icon to manifest ([c2dc8d3](https://github.com/VectifyAI/pageindex-mcp/commit/c2dc8d39e51159b601812f2976b5c10f621ac3d0))
+* add MCP resources support ([72f3699](https://github.com/VectifyAI/pageindex-mcp/commit/72f36996bbab79785a684bc9ce99e35a1f89294a))
+
 ## [1.4.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.1...v1.4.2) (2025-09-19)
 
 
