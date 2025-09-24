@@ -5,7 +5,12 @@ import {
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type {
+  CallToolResult,
+  ListResourcesResult,
+  ListResourceTemplatesResult,
+  ReadResourceResult,
+} from '@modelcontextprotocol/sdk/types.js';
 import pRetry from 'p-retry';
 import { CONFIG } from '../config.js';
 import { PageIndexOAuthProvider } from './oauth-provider.js';
@@ -190,6 +195,84 @@ export class PageIndexMcpClient {
 
     const tools = await this.client.listTools();
     return tools;
+  }
+
+  /**
+   * List available resources on the remote server
+   */
+  async listResources(): Promise<ListResourcesResult> {
+    return pRetry(
+      async () => {
+        if (!this.client) {
+          throw new Error('Client not available');
+        }
+        const result = await this.client.listResources();
+        return result as ListResourcesResult;
+      },
+      {
+        retries: 2,
+        factor: 1.5,
+        minTimeout: 500,
+        maxTimeout: 3000,
+        onFailedAttempt: (error) => {
+          console.error(
+            `List resources attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.\n`,
+          );
+        },
+      },
+    );
+  }
+
+  /**
+   * Read a specific resource from the remote server
+   */
+  async readResource(uri: string): Promise<ReadResourceResult> {
+    return pRetry(
+      async () => {
+        if (!this.client) {
+          throw new Error('Client not available');
+        }
+        const result = await this.client.readResource({ uri });
+        return result as ReadResourceResult;
+      },
+      {
+        retries: 2,
+        factor: 1.5,
+        minTimeout: 500,
+        maxTimeout: 3000,
+        onFailedAttempt: (error) => {
+          console.error(
+            `Read resource "${uri}" attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.\n`,
+          );
+        },
+      },
+    );
+  }
+
+  /**
+   * List resource templates from the remote server
+   */
+  async listResourceTemplates(): Promise<ListResourceTemplatesResult> {
+    return pRetry(
+      async () => {
+        if (!this.client) {
+          throw new Error('Client not available');
+        }
+        const result = await this.client.listResourceTemplates();
+        return result as ListResourceTemplatesResult;
+      },
+      {
+        retries: 2,
+        factor: 1.5,
+        minTimeout: 500,
+        maxTimeout: 3000,
+        onFailedAttempt: (error) => {
+          console.error(
+            `List resource templates attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.\n`,
+          );
+        },
+      },
+    );
   }
 
   /**
