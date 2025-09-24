@@ -12,6 +12,7 @@
   "homepage": "https://github.com/VectifyAI/pageindex-mcp",
   "documentation": "https://github.com/VectifyAI/pageindex-mcp",
   "support": "https://github.com/VectifyAI/pageindex-mcp/issues",
+  "icon": "https://pageindex.ai/static/favicons/favicon.ico",
   "keywords": [
     "mcp",
     "model-context-protocol",
