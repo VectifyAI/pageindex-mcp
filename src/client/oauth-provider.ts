@@ -1,10 +1,8 @@
-import { exec } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { createServer } from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { URL } from 'node:url';
-import { promisify } from 'node:util';
 import type { OAuthClientProvider } from '@modelcontextprotocol/sdk/client/auth.js';
 import type {
   OAuthClientInformation,
@@ -12,9 +10,7 @@ import type {
   OAuthClientMetadata,
   OAuthTokens,
 } from '@modelcontextprotocol/sdk/shared/auth.js';
-import { throttle } from 'lodash';
-
-const execAsync = promisify(exec);
+import open from 'open';
 
 interface StoredTokens {
   tokens?: OAuthTokens;
@@ -31,7 +27,6 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
   private _clientInfo?: OAuthClientInformationFull;
   private _codeVerifier?: string;
   private tokenFilePath: string;
-  private throttledOpenBrowser: (url: string) => Promise<void>;
 
   /**
    * Check for existing client information in storage
@@ -60,8 +55,6 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
     this.tokenFilePath =
       tokenStoragePath ||
       path.join(os.homedir(), '.pageindex-mcp', 'oauth-tokens.json');
-
-    this.throttledOpenBrowser = throttle(this.openBrowser.bind(this), 1000);
   }
 
   get redirectUrl(): string | URL {
@@ -107,7 +100,7 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
 
   async redirectToAuthorization(authorizationUrl: URL): Promise<void> {
     try {
-      await this.throttledOpenBrowser(authorizationUrl.toString());
+      await open(authorizationUrl.toString());
     } catch (error) {
       console.error(
         error instanceof Error
@@ -221,7 +214,7 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
         res.end('Not found');
       });
 
-      server.listen(port, () => {
+      server.listen(port, 'localhost', () => {
         console.error(`Listening for OAuth callback on port ${port}...\n`);
       });
 
@@ -237,24 +230,6 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
         5 * 60 * 1000,
       );
     });
-  }
-
-  private async openBrowser(url: string): Promise<void> {
-    const platform = process.platform;
-    let command: string;
-
-    switch (platform) {
-      case 'darwin':
-        command = `open "${url}"`;
-        break;
-      case 'win32':
-        command = `start "${url}"`;
-        break;
-      default:
-        command = `xdg-open "${url}"`;
-        break;
-    }
-    await execAsync(command);
   }
 
   public async loadFromStorage(): Promise<void> {
@@ -281,6 +256,7 @@ export class PageIndexOAuthProvider implements OAuthClientProvider {
 
     try {
       await fs.mkdir(path.dirname(this.tokenFilePath), { recursive: true });
+      // Set restrictive file permissions (Unix-like systems only; ignored on Windows)
       await fs.writeFile(this.tokenFilePath, JSON.stringify(stored, null, 2), {
         mode: 0o600,
       });

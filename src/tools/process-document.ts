@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import open from 'open';
 import pRetry, { AbortError } from 'p-retry';
@@ -149,7 +150,7 @@ async function processDocument(
 async function readLocalPdf(filePath: string): Promise<FileInfo> {
   let resolvedPath = filePath;
   if (filePath.startsWith('file://')) {
-    resolvedPath = new URL(filePath).pathname;
+    resolvedPath = fileURLToPath(filePath);
   }
   if (!path.isAbsolute(resolvedPath)) {
     resolvedPath = path.resolve(process.cwd(), resolvedPath);
