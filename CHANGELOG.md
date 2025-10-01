@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.5.0...v1.5.1) (2025-10-01)
+
+
+### Bug Fixes
+
+* improve Windows compatibility for OAuth and file handling ([4fb3b04](https://github.com/VectifyAI/pageindex-mcp/commit/4fb3b045359f739568405cc2351e9b8bb8f3a01c))
+
 # [1.5.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.4.2...v1.5.0) (2025-09-24)
 
 
