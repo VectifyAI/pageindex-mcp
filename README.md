@@ -9,7 +9,7 @@
 [![PageIndex MCP Home](https://img.shields.io/badge/PageIndex_MCP_Home-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;
 
 
-Want to chat with PDF on Claude but got limit reached error? You can add your file to PageIndex to seamlessly chat with long PDFs on your Claude desktop.  
+Want to chat with long PDFs but hit context limit reached errors? Add your file to PageIndex to seamlessly chat with long PDFs on any agent/LLM platforms.
 
 ✨ Chat to long PDFs the **human-like, reasoning-based way** ✨
 
@@ -34,7 +34,7 @@ For more information about PageIndex MCP, check out the [PageIndex MCP](https://
   </a>
 </div>
 
-PageIndex is a vectorless **reasoning-based RAG** system which uses multi-step reasoning and tree search to retrieve information like a human expert would. It has the following properties:
+PageIndex is a vectorless, **reasoning-based RAG** system that generates hierarchical **tree structures** of documents and uses multi-step **reasoning** and tree search to retrieve information like a human expert would. It has the following key properties:
 
 - **Higher Accuracy**: Relevance beyond similarity
 - **Better Transparency**: Clear reasoning trajectory with traceable search paths
