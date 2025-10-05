@@ -10,7 +10,7 @@
 
 [**PageIndex**](https://github.com/VectifyAI/PageIndex) is a vectorless, reasoning-based RAG system that represents documents as hierarchical **tree structures**. It enables LLMs to navigate and retrieve information through structure and **reasoning**, not vector similarity — much like a human would retrieve information using a book's index.
 
-[**PageIndex MCP**](https://pageindex.ai/mcp) exposes this **LLM-native tree index** directly to agents and LLMs via MCP, allowing platforms like **Claude**, **Cursor**, and other MCP-compatible agents or LLMs to reason over document structure and retrieve the right information — without vector databases.
+[**PageIndex MCP**](https://pageindex.ai/mcp) exposes this **LLM-native tree index** directly to LLMs via MCP, allowing platforms like **Claude**, **Cursor**, and other MCP-compatible agents or LLMs to reason over document structure and retrieve the right information — without vector databases.
 
 Want to chat with long PDFs but hit context limit reached errors? Add your file to PageIndex to seamlessly chat with long PDFs on any agent/LLM platforms.
 
