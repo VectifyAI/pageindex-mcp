@@ -31,6 +31,7 @@
     "pageindex",
     "document-processing"
   ],
+  "mcpName": "io.github.vectifyai/pageindex-mcp",
   "author": "VectifyAI",
   "license": "MIT",
   "dependencies": {
