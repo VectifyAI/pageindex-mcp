@@ -1,52 +1,50 @@
-name: Publish MCP Server
+name: Publish to MCP Registry
 
 on:
+  workflow_run:
+    workflows: ['Release']
+    types: [completed]
+    branches: [master]
+  workflow_dispatch: # Support manual execution
   push:
-    tags:
-      - 'v*.*.*'
+    tags: ['v*'] # Also triggers on version tags like v1.0.0
 
 permissions:
+  id-token: write # Required for OIDC authentication
   contents: read
-  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Only run if the Release workflow succeeded or if manually triggered
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Run linter
+      - name: Lint and format check
         run: pnpm run lint
 
-      - name: Build project
-        run: pnpm run build
-
-      - name: Publish to npm
-        run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Install MCP Publisher CLI
-        run: npm install -g @modelcontextprotocol/publisher
+      - name: Install MCP Publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/download/v1.0.0/mcp-publisher_1.0.0_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
 
       - name: Login to MCP Registry
-        run: mcp-publisher login github-oidc
+        run: ./mcp-publisher login github-oidc
 
       - name: Publish to MCP Registry
-        run: mcp-publisher publish
+        run: ./mcp-publisher publish

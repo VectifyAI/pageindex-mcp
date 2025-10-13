@@ -8,13 +8,18 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node scripts/sync-manifest-version.js && pnpm run dxt:pack && pnpm run mcpb:pack"
+        "prepareCmd": "node scripts/sync-manifest-version.js && pnpm run dxt:pack && pnpm run mcpb:pack && node scripts/update-server-json.js"
       }
     ],
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md", "package.json", "manifest.json"],
+        "assets": [
+          "CHANGELOG.md",
+          "package.json",
+          "manifest.json",
+          "server.json"
+        ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
@@ -31,6 +36,11 @@
             "path": "pageindex-mcp.mcpb",
             "name": "pageindex-mcp-${nextRelease.version}.mcpb",
             "label": "pageindex-mcp-${nextRelease.version}.mcpb"
+          },
+          {
+            "path": "server.json",
+            "name": "server.json",
+            "label": "server.json"
           }
         ]
       }
