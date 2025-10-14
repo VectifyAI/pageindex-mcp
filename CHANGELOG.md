@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.5.1...v1.6.0) (2025-10-14)
+
+
+### Features
+
+* add MCP server publishing workflow and manifest ([b9f661c](https://github.com/VectifyAI/pageindex-mcp/commit/b9f661cb4a0a5c49d6107caa88b305fbbd0a2cd3))
+
 ## [1.5.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.5.0...v1.5.1) (2025-10-01)
 
 
