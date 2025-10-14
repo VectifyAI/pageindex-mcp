@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.6.0...v1.6.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* **mcp:** correct server.json schema compliance for registry publishing ([c0e24da](https://github.com/VectifyAI/pageindex-mcp/commit/c0e24da6d0cb7f1927e903387474cf93c7f16ece))
+
 # [1.6.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.5.1...v1.6.0) (2025-10-14)
 
 
