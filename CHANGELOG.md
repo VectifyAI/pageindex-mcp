@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.6.1...v1.6.2) (2025-10-14)
+
+
+### Bug Fixes
+
+* update registry naming consistency ([51c2d84](https://github.com/VectifyAI/pageindex-mcp/commit/51c2d84a683ad1928dad11bb6162983566b99c02))
+
 ## [1.6.1](https://github.com/VectifyAI/pageindex-mcp/compare/v1.6.0...v1.6.1) (2025-10-14)
 
 

@@ -7,11 +7,11 @@
     "url": "https://github.com/VectifyAI/pageindex-mcp",
     "source": "github"
   },
-  "version": "1.6.1",
+  "version": "1.6.2",
   "packages": [
     {
       "registryType": "npm",
-      "version": "1.6.1",
+      "version": "1.6.2",
       "identifier": "pageindex-mcp",
       "transport": {
         "type": "stdio"
@@ -19,9 +19,9 @@
     },
     {
       "registryType": "mcpb",
-      "version": "1.6.1",
-      "identifier": "https://github.com/VectifyAI/pageindex-mcp/releases/download/v1.6.1/pageindex-mcp-1.6.1.mcpb",
-      "fileSha256": "64fd3195919d8454b53e8002946b365566018e880d94d80b0ba095dd554f95dc",
+      "version": "1.6.2",
+      "identifier": "https://github.com/VectifyAI/pageindex-mcp/releases/download/v1.6.2/pageindex-mcp-1.6.2.mcpb",
+      "fileSha256": "67138e48f8755be07fafb149cb438f1144619e90b232e5329208ec0c2fbf2d6f",
       "transport": {
         "type": "stdio"
       }
