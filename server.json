@@ -2,8 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.vectifyai/pageindex-mcp",
   "title": "PageIndex MCP",
-  "description": "MCP server for PageIndex - a reasoning-based RAG system for chatting with long PDFs. Supports local and online PDFs with unlimited conversations and free 1000 pages.",
-  "status": "active",
+  "description": "Reasoning-based RAG system for chatting with long PDFs. Supports local and online files.",
   "repository": {
     "url": "https://github.com/VectifyAI/pageindex-mcp",
     "source": "github"
@@ -11,7 +10,7 @@
   "version": "1.6.0",
   "packages": [
     {
-      "registry_type": "npm",
+      "registryType": "npm",
       "version": "1.6.0",
       "identifier": "pageindex-mcp",
       "transport": {
@@ -19,10 +18,10 @@
       }
     },
     {
-      "registry_type": "mcpb",
+      "registryType": "mcpb",
       "version": "1.6.0",
-      "identifier": "https://github.com/VectifyAI/pageindex-mcp/releases/download/v1.6.0/pageindex-mcp-1.6.0.mcpb",
-      "file_sha256": "3985f8b4dbca16eb7fcae75a574f65e5c668ca6e6a255cdd016e933fde7aa9f3",
+      "identifier": "https://github.com/VectifyAI/pageindex-mcp/releases/download/v1.5.0/pageindex-mcp-1.5.1.mcpb",
+      "fileSha256": "",
       "transport": {
         "type": "stdio"
       }

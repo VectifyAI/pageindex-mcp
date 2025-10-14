@@ -27,18 +27,18 @@ try {
   // Update packages
   if (server.packages && server.packages.length > 0) {
     // Update npm package (first entry)
-    if (server.packages[0].registry_type === 'npm') {
+    if (server.packages[0].registryType === 'npm') {
       server.packages[0].version = pkg.version;
     }
 
     // Update MCPB package (second entry)
     if (
       server.packages.length > 1 &&
-      server.packages[1].registry_type === 'mcpb'
+      server.packages[1].registryType === 'mcpb'
     ) {
       server.packages[1].version = pkg.version;
       server.packages[1].identifier = `https://github.com/VectifyAI/pageindex-mcp/releases/download/v${pkg.version}/pageindex-mcp-${pkg.version}.mcpb`;
-      server.packages[1].file_sha256 = hash;
+      server.packages[1].fileSha256 = hash;
       server.packages[1].transport = {
         type: 'stdio',
       };
