@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
-  "name": "io.github.vectifyai/pageindex-mcp",
+  "name": "io.github.VectifyAI/pageindex-mcp",
   "title": "PageIndex MCP",
   "description": "Reasoning-based RAG system for chatting with long PDFs. Supports local and online files.",
   "repository": {
@@ -25,12 +25,6 @@
       "transport": {
         "type": "stdio"
       }
-    }
-  ],
-  "remotes": [
-    {
-      "type": "streamable-http",
-      "url": "https://mcp.pageindex.ai/mcp"
     }
   ]
 }
