@@ -93,7 +93,7 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
   "mcpServers": {
     "pageindex": {
       "type": "http",
-      "url": "https://mcp.pageindex.ai/mcp"
+      "url": "https://chat.pageindex.ai/mcp"
     }
   }
 }
@@ -109,7 +109,7 @@ If your MCP client doesn't support HTTP servers directly, you can use [mcp-remot
   "mcpServers": {
     "pageindex": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.pageindex.ai/mcp"]
+      "args": ["-y", "mcp-remote", "https://chat.pageindex.ai/mcp"]
     }
   }
 }
