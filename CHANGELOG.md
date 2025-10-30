@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/VectifyAI/pageindex-mcp/compare/v1.6.2...v1.6.3) (2025-10-30)
+
+
+### Bug Fixes
+
+* update MCP server URL to chat.pageindex.ai ([5f6d1e1](https://github.com/VectifyAI/pageindex-mcp/commit/5f6d1e1fd2cad1a135670dbf322311ad2c23ba98))
+
 ## [1.6.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.6.1...v1.6.2) (2025-10-14)
 
 
