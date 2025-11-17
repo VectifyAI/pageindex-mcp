@@ -6,11 +6,11 @@
 
 # PageIndex MCP
 
-[![PageIndex MCP Home](https://img.shields.io/badge/PageIndex_MCP_Home-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;[![PageIndex Home](https://img.shields.io/badge/PageIndex_Home-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)
+[![PageIndex GitHub](https://img.shields.io/badge/PageIndex_GitHub-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/VectifyAI/PageIndex)&nbsp;&nbsp;[![PageIndex MCP Home](https://img.shields.io/badge/PageIndex_MCP-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;[![PageIndex Home](https://img.shields.io/badge/PageIndex-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)
 
-[**PageIndex**](https://github.com/VectifyAI/PageIndex) is a vectorless, reasoning-based RAG system that represents documents as hierarchical **tree structures**. It enables LLMs to navigate and retrieve information through structure and **reasoning**, not vector similarity — much like a human would retrieve information using a book's index.
+📘 [**PageIndex**](https://github.com/VectifyAI/PageIndex) is a vectorless, reasoning-based RAG system that represents documents as hierarchical **tree structures**. It enables LLMs to navigate and retrieve information through structure and **reasoning**, not vector similarity — much like a human would retrieve information using a book's index.
 
-[**PageIndex MCP**](https://pageindex.ai/mcp) exposes this **LLM-native tree index** directly to LLMs via MCP, allowing platforms like **Claude**, **Cursor**, and other MCP-compatible agents or LLMs to reason over document structure and retrieve the right information — without vector databases.
+🔌 [**PageIndex MCP**](https://pageindex.ai/mcp) exposes this **LLM-native, in-context tree index** directly to LLMs via MCP, allowing platforms like **Claude**, **Cursor**, and other MCP-compatible agents or LLMs to reason over document structure and retrieve the right information — without vector databases.
 
 Want to chat with long PDFs but hit context limit reached errors? Add your file to PageIndex to seamlessly chat with long PDFs on any agent/LLM platforms.
 
@@ -20,7 +20,9 @@ Want to chat with long PDFs but hit context limit reached errors? Add your file 
 - Free 1000 pages  
 - Unlimited conversations  
 
-For more information about PageIndex MCP, check out the [PageIndex MCP](https://pageindex.ai/mcp) project page.
+For more information, visit the [PageIndex MCP](https://pageindex.ai/mcp) page.
+
+💡 Looking for a fully hosted experience? Try [**PageIndex Chat**](https://chat.pageindex.ai) 🤖: a human-like document analyst that lets you chat with long PDFs using the same agentic, reasoning-based workflow as PageIndex MCP.
 
 <p align="center">
   <a href="https://pageindex.ai/mcp">
@@ -33,7 +35,7 @@ For more information about PageIndex MCP, check out the [PageIndex MCP](https://
 
 <div align="center">
   <a href="https://pageindex.ai/mcp">
-    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="80%">
+    <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="70%">
   </a>
 </div>
 
