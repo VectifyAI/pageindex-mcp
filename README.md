@@ -6,6 +6,8 @@
 
 # PageIndex MCP
 
+> If you find this repo useful, please also star our **[main PageIndex repo](https://github.com/VectifyAI/PageIndex)** ⭐
+
 [![PageIndex GitHub](https://img.shields.io/badge/PageIndex_GitHub-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/VectifyAI/PageIndex)&nbsp;&nbsp;[![PageIndex MCP Home](https://img.shields.io/badge/PageIndex_MCP-4280d3?style=for-the-badge&logo=readthedocs&logoColor=white)](https://pageindex.ai/mcp)&nbsp;&nbsp;[![PageIndex Home](https://img.shields.io/badge/PageIndex-3B82F6?style=for-the-badge&logo=homeadvisor&logoColor=white)](https://vectify.ai/pageindex)
 
 📘 [**PageIndex**](https://github.com/VectifyAI/PageIndex) is a vectorless, reasoning-based RAG system that represents documents as hierarchical **tree structures**. It enables LLMs to navigate and retrieve information through structure and **reasoning**, not vector similarity — much like a human would retrieve information using a book's index.
