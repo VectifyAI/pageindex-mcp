@@ -1,5 +1,5 @@
 {
-  "name": "pageindex-mcp",
+  "name": "@pageindex/mcp",
   "version": "1.6.3",
   "description": "MCP server for PageIndex",
   "type": "module",

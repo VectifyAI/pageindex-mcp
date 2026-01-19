@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "version": "1.6.3",
-      "identifier": "pageindex-mcp",
+      "identifier": "@pageindex/mcp",
       "transport": {
         "type": "stdio"
       }

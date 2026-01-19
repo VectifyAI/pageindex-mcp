@@ -80,7 +80,7 @@ Add to your MCP configuration:
   "mcpServers": {
     "pageindex": {
       "command": "npx",
-      "args": ["-y", "pageindex-mcp"]
+      "args": ["-y", "@pageindex/mcp"]
     }
   }
 }
