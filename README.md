@@ -18,9 +18,9 @@ Want to chat with long PDFs but hit context limit reached errors? Add your file 
 
 ✨ Chat to long PDFs the **human-like, reasoning-based way** ✨
 
-- Support local and online PDFs  
-- Free 1000 pages  
-- Unlimited conversations  
+- Support local and online PDFs
+- Free 1000 pages
+- Unlimited conversations
 
 For more information, visit the [PageIndex MCP](https://pageindex.ai/mcp) page.
 
@@ -31,7 +31,7 @@ For more information, visit the [PageIndex MCP](https://pageindex.ai/mcp) page.
     <img src="https://github.com/user-attachments/assets/d807d506-131d-4c7b-837c-96ab1adb2271">
   </a>
 </p>
-  
+
 
 # What is PageIndex?
 
@@ -50,9 +50,10 @@ PageIndex is a vectorless, **reasoning-based RAG** system that generates hierarc
 - **No Chunking**: Preserve full document context and structure
 - **No Top-K**: Retrieve all relevant passages automatically
 
-
 ---
-# PageIndex MCP Setup 
+
+# PageIndex MCP Setup
+
 See [PageIndex MCP](https://pageindex.ai/mcp) for full video guidances.
 
 ### 1. For Claude Desktop (Recommended)
@@ -103,6 +104,27 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
 }
 ```
 
+**Using API Key Authentication (for programmatic use or clients without OAuth support):**
+
+1. Go to [PageIndex Chat API Keys](https://chat.pageindex.ai/chat#settings/api-keys)
+2. Click **Create Key** and copy the generated key (format: `pi_xxxxx...`)
+3. Add the `Authorization` header to your configuration:
+
+```json
+{
+  "mcpServers": {
+    "pageindex": {
+      "type": "http",
+      "url": "https://chat.pageindex.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer pi_your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+> **Note**: The full API Key is only shown once at creation. Store it securely.
 
 **For clients that don't support HTTP MCP servers:**
 
@@ -118,8 +140,6 @@ If your MCP client doesn't support HTTP servers directly, you can use [mcp-remot
   }
 }
 ```
-
-
 
 > **Note**: Option 1 provides local PDF upload capabilities, while Option 2 only supports PDF processing via URLs (no local file uploads).
 
