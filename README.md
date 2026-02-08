@@ -104,10 +104,10 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
 }
 ```
 
-**Using API Key Authentication (for programmatic use or clients without OAuth support):**
+**Using MCP Token Authentication (for programmatic use or clients without OAuth support):**
 
-1. Go to [PageIndex Chat API Keys](https://chat.pageindex.ai/chat#settings/api-keys)
-2. Click **Create Key** and copy the generated key (format: `pi_xxxxx...`)
+1. Go to [PageIndex Chat MCP Token](https://chat.pageindex.ai/chat#settings/mcp-token)
+2. Click **Create** and copy the generated key (format: `pi_xxxxx...`)
 3. Add the `Authorization` header to your configuration:
 
 ```json
@@ -117,14 +117,14 @@ Connect directly to the PageIndex OAuth-enabled MCP server:
       "type": "http",
       "url": "https://chat.pageindex.ai/mcp",
       "headers": {
-        "Authorization": "Bearer pi_your_api_key_here"
+        "Authorization": "Bearer pi_your_mcp_token"
       }
     }
   }
 }
 ```
 
-> **Note**: The full API Key is only shown once at creation. Store it securely.
+> **Note**: The full MCP token is only shown once at creation. Store it securely.
 
 **For clients that don't support HTTP MCP servers:**
 
