@@ -32,7 +32,6 @@ For more information, visit the [PageIndex MCP](https://pageindex.ai/mcp) page.
   </a>
 </p>
 
-
 # What is PageIndex?
 
 <div align="center">
@@ -56,25 +55,54 @@ PageIndex is a vectorless, **reasoning-based RAG** system that generates hierarc
 
 See [PageIndex MCP](https://pageindex.ai/mcp) for full video guidances.
 
-### 1. For Claude Desktop (Recommended)
+### 1. For Developers — `api.pageindex.ai/mcp` (Recommended)
 
-**One-Click Installation with Desktop Extension (MCPB):**
+Works with all MCP-compatible clients (Claude Desktop, Cursor, Windsurf, Claude Code, etc.). Simple API Key authentication — no OAuth flow required.
 
-1. Download the latest `.mcpb` file from [Releases](https://github.com/VectifyAI/pageindex-mcp/releases)
-2. Double-click the `.mcpb` file to install automatically in Claude Desktop
-3. The OAuth authentication will be handled automatically when you first use the extension
+1. Go to [PageIndex Dashboard](https://dash.pageindex.ai/api-keys) to create an API Key
+2. Copy the generated key
+3. Add to your MCP configuration:
 
-> **Note**: Claude Desktop Extensions now use the `.mcpb` (MCP Bundle) file extension. Existing `.dxt` extensions will continue to work, but we recommend using `.mcpb` for new installations.
+```json
+{
+  "mcpServers": {
+    "pageindex": {
+      "type": "http",
+      "url": "https://api.pageindex.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer your_api_key"
+      }
+    }
+  }
+}
+```
 
-This is the easiest way to get started with PageIndex's reasoning-based RAG capabilities.
+For more details, visit the [PageIndex API Dashboard](https://dash.pageindex.ai).
 
-### 2. For Other MCP-Compatible Clients
+### 2. For PageIndex Chat Users — `mcp.pageindex.ai/mcp`
 
-#### Option 1: Local MCP Server (with local PDF upload)
+If you already have a [PageIndex Chat](https://chat.pageindex.ai) account, you can connect your MCP client directly via OAuth.
 
-**Requirements:** Node.js ≥18.0.0
+**Claude Desktop — One-Click Install:**
 
-Add to your MCP configuration:
+Download the `.mcpb` file from [Releases](https://github.com/VectifyAI/pageindex-mcp/releases) and double-click to install. OAuth authentication is handled automatically.
+
+**Other MCP Clients:**
+
+```json
+{
+  "mcpServers": {
+    "pageindex": {
+      "type": "http",
+      "url": "https://mcp.pageindex.ai/mcp"
+    }
+  }
+}
+```
+
+**Local MCP Server (with local PDF upload):**
+
+If you need to upload local PDF files, you can run the local MCP server (requires Node.js ≥18.0.0):
 
 ```json
 {
@@ -87,61 +115,7 @@ Add to your MCP configuration:
 }
 ```
 
-> **Note**: This local server provides full PDF upload capabilities and handles all authentication automatically.
-
-#### Option 2: Direct Connection to PageIndex
-
-Connect directly to the PageIndex OAuth-enabled MCP server:
-
-```json
-{
-  "mcpServers": {
-    "pageindex": {
-      "type": "http",
-      "url": "https://chat.pageindex.ai/mcp"
-    }
-  }
-}
-```
-
-**Using MCP Token Authentication (for programmatic use or clients without OAuth support):**
-
-1. Go to [PageIndex Chat MCP Token](https://chat.pageindex.ai/chat#settings/mcp-token)
-2. Click **Create** and copy the generated token (format: `pi_xxxxx...`)
-3. Add the `Authorization` header to your configuration:
-
-```json
-{
-  "mcpServers": {
-    "pageindex": {
-      "type": "http",
-      "url": "https://chat.pageindex.ai/mcp",
-      "headers": {
-        "Authorization": "Bearer pi_your_mcp_token"
-      }
-    }
-  }
-}
-```
-
-> **Note**: The full MCP token is only shown once at creation. Store it securely.
-
-**For clients that don't support HTTP MCP servers:**
-
-If your MCP client doesn't support HTTP servers directly, you can use [mcp-remote](https://github.com/geelen/mcp-remote) as a bridge:
-
-```json
-{
-  "mcpServers": {
-    "pageindex": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://chat.pageindex.ai/mcp"]
-    }
-  }
-}
-```
-
-> **Note**: Option 1 provides local PDF upload capabilities, while Option 2 only supports PDF processing via URLs (no local file uploads).
+For more details, visit [PageIndex Chat](https://chat.pageindex.ai).
 
 # Related Links
 
