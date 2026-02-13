@@ -53,9 +53,7 @@ PageIndex is a vectorless, **reasoning-based RAG** system that generates hierarc
 
 # PageIndex MCP Setup
 
-See [PageIndex MCP](https://pageindex.ai/mcp) for full video guidances.
-
-### 1. For Developers
+### For Developers
 
 Connect PageIndex to your agent framework or AI SDK via MCP. Works with [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python), [Vercel AI SDK](https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools), [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/mcp/), [LangChain](https://github.com/langchain-ai/langchain-mcp-adapters), and any MCP-compatible client. Simple API Key authentication — no OAuth flow required.
 
@@ -79,7 +77,7 @@ Connect PageIndex to your agent framework or AI SDK via MCP. Works with [Claude 
 
 For more details, visit the [PageIndex API Dashboard](https://dash.pageindex.ai).
 
-### 2. For PageIndex Chat Users
+### For PageIndex Chat Users
 
 If you already have a [PageIndex Chat](https://chat.pageindex.ai) account, you can connect your MCP client directly via OAuth.
 
