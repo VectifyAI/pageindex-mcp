@@ -92,7 +92,7 @@ Download the `.mcpb` file from [Releases](https://github.com/VectifyAI/pageindex
   "mcpServers": {
     "pageindex": {
       "type": "http",
-      "url": "https://mcp.pageindex.ai/mcp"
+      "url": "https://chat.pageindex.ai/mcp"
     }
   }
 }
