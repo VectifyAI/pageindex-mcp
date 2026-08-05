@@ -1,3 +1,5 @@
+[![MCP Toplist](https://mcptoplist.com/badge/io.github.VectifyAI%2Fpageindex-mcp.svg)](https://mcptoplist.com/server/io.github.VectifyAI%2Fpageindex-mcp)
+
 <div align="center">
   <a href="https://pageindex.ai/mcp">
     <img src="https://docs.pageindex.ai/images/general/mcp_banner.jpg">
