@@ -9,9 +9,9 @@ import type { PageIndexMcpClient } from '../client/mcp-client.js';
 import { createErrorResponse } from '../result.js';
 import type { ToolDefinition } from './types.js';
 
-// Schema for process document parameters - accepts both URLs and local file paths
-const processDocumentSchema = z.object({
-  url: z.string().describe('URL to a PDF document or local file path'),
+// Used when the server's submit_document schema is unavailable, e.g. the
+// tools/list request failed.
+const legacyDestination = {
   folder_id: z
     .string()
     .nullable()
@@ -19,9 +19,9 @@ const processDocumentSchema = z.object({
     .describe(
       'Target folder ID. Use "root" for the root folder, or omit to use the user\'s default folder (configured in settings).',
     ),
-});
+};
 
-type ProcessDocumentParams = z.infer<typeof processDocumentSchema>;
+type ProcessDocumentParams = { url: string } & Record<string, unknown>;
 
 interface FileInfo {
   name: string;
@@ -38,7 +38,7 @@ async function processDocument(
   params: ProcessDocumentParams,
   mcpClient: PageIndexMcpClient,
 ): Promise<CallToolResult> {
-  const { url: rawUrl, folder_id } = params;
+  const { url: rawUrl, ...destination } = params;
   const url = rawUrl.trim();
 
   try {
@@ -75,8 +75,8 @@ async function processDocument(
     }
 
     const submitResult = await mcpClient.callTool('submit_document', {
+      ...destination,
       file_name: uploadInfo.file_name,
-      ...(folder_id !== undefined ? { folder_id } : {}),
     });
 
     if (submitResult.isError) {
@@ -339,10 +339,29 @@ async function downloadPdf(url: string): Promise<FileInfo> {
   );
 }
 
-export const processDocumentTool: ToolDefinition = {
-  name: 'process_document',
-  description:
-    'Upload and process PDF documents from URLs or local files. Supports OCR processing, hierarchical content extraction, and intelligent document analysis. Returns a unique doc_id for subsequent operations. Processing typically takes 0-3 minutes depending on document size (estimate: 2 seconds per page). Supports files up to 100MB.',
-  inputSchema: processDocumentSchema,
-  handler: processDocument,
-};
+/**
+ * Build process_document. It uploads the file itself and then calls the
+ * server's submit_document, so its destination parameters are exactly
+ * submit_document's (minus `file_name`): whatever the connected server
+ * accepts to name a folder (`path`, the legacy `folder_id`) is offered and
+ * forwarded as-is, without a release of this package.
+ */
+export function createProcessDocumentTool(
+  submitDocumentSchema?: z.ZodTypeAny,
+): ToolDefinition {
+  const destination =
+    submitDocumentSchema instanceof z.ZodObject
+      ? submitDocumentSchema.omit({ file_name: true }).shape
+      : legacyDestination;
+
+  return {
+    name: 'process_document',
+    description:
+      'Upload and process a PDF from a URL or a local file path (≤100MB). Processing typically takes 0-3 minutes depending on document size (estimate: 2 seconds per page). Returns the new document and its processing status; call get_document() to confirm it has finished before reading its content.',
+    inputSchema: z.object({
+      url: z.string().describe('URL to a PDF document or local file path'),
+      ...destination,
+    }),
+    handler: processDocument,
+  };
+}
