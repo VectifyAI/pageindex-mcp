@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/VectifyAI/pageindex-mcp/compare/v1.8.2...v1.9.0) (2026-11-03)
+
+
+### Features
+
+* **tools:** let process_document take every destination submit_document accepts ([#7](https://github.com/VectifyAI/pageindex-mcp/issues/7)) ([075877b](https://github.com/VectifyAI/pageindex-mcp/commit/075877bea0478f7af330e94ccf73c46d66bc3908))
+
 ## [1.8.2](https://github.com/VectifyAI/pageindex-mcp/compare/v1.8.1...v1.8.2) (2026-07-25)
 
 
