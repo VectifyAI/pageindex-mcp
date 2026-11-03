@@ -35,19 +35,14 @@ export class RemoteToolsProxy {
     try {
       const toolsResponse = await this.client.listTools();
 
-      // Exclude tools that are used internally by process_document
-      const excludedTools = ['get_signed_upload_url', 'submit_document'];
-
-      this.remoteTools = toolsResponse.tools
-        .filter((tool: Tool) => !excludedTools.includes(tool.name))
-        .map((tool: Tool) => ({
-          name: tool.name,
-          description: tool.description || `Remote tool: ${tool.name}`,
-          inputSchema: this.convertJsonSchemaToZod(tool.inputSchema),
-          handler: async (params: any, client: PageIndexMcpClient) => {
-            return await client.callTool(tool.name, params);
-          },
-        }));
+      this.remoteTools = toolsResponse.tools.map((tool: Tool) => ({
+        name: tool.name,
+        description: tool.description || `Remote tool: ${tool.name}`,
+        inputSchema: this.convertJsonSchemaToZod(tool.inputSchema),
+        handler: async (params: any, client: PageIndexMcpClient) => {
+          return await client.callTool(tool.name, params);
+        },
+      }));
 
       return this.remoteTools;
     } catch (error) {
@@ -70,6 +65,14 @@ export class RemoteToolsProxy {
   private convertJsonSchemaToZod(jsonSchema: any): z.ZodSchema {
     if (!jsonSchema || typeof jsonSchema !== 'object') {
       return z.any();
+    }
+
+    const nonNull = this.nonNullBranch(jsonSchema);
+    if (nonNull) {
+      const schema = this.convertJsonSchemaToZod(nonNull).nullable();
+      return jsonSchema.description
+        ? schema.describe(jsonSchema.description)
+        : schema;
     }
 
     const { type, properties, required = [], enum: enumValues } = jsonSchema;
@@ -141,5 +144,28 @@ export class RemoteToolsProxy {
       default:
         return z.any();
     }
+  }
+
+  /**
+   * The non-null schema of a nullable field, which arrives as
+   * `anyOf: [T, {type: 'null'}]` or `type: [T, 'null']`. Undefined for
+   * anything else, including unions of several non-null types.
+   */
+  private nonNullBranch(jsonSchema: any): any {
+    if (Array.isArray(jsonSchema.anyOf)) {
+      const branches = jsonSchema.anyOf.filter(
+        (branch: any) => branch?.type !== 'null',
+      );
+      if (branches.length === 1 && branches.length < jsonSchema.anyOf.length) {
+        return branches[0];
+      }
+    }
+    if (Array.isArray(jsonSchema.type)) {
+      const types = jsonSchema.type.filter((type: string) => type !== 'null');
+      if (types.length === 1 && types.length < jsonSchema.type.length) {
+        return { ...jsonSchema, type: types[0] };
+      }
+    }
+    return undefined;
   }
 }

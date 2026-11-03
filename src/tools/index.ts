@@ -1,14 +1,16 @@
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import type { PageIndexMcpClient } from '../client/mcp-client.js';
-import { processDocumentTool } from './process-document.js';
+import { createProcessDocumentTool } from './process-document.js';
 import type { ToolDefinition } from './types.js';
 
 export { RemoteToolsProxy } from './remote-proxy.js';
 export { ToolDefinition } from './types.js';
 
-const localTools: ToolDefinition[] = [processDocumentTool];
-let tools: ToolDefinition[] = [...localTools];
+// Remote tools process_document calls itself; they are never listed.
+const internalRemoteTools = ['get_signed_upload_url', 'submit_document'];
+
+let tools: ToolDefinition[] = [createProcessDocumentTool()];
 
 /**
  * Get all registered tools (local + remote)
@@ -21,13 +23,19 @@ export function getTools(): ToolDefinition[] {
  * Update tools array with remote tools from proxy
  */
 export function updateToolsWithRemote(remoteTools: ToolDefinition[]) {
-  // Filter out remote tools that might conflict with local tools
-  const filteredRemoteTools = remoteTools.filter(
+  const submitDocument = remoteTools.find(
+    (tool) => tool.name === 'submit_document',
+  );
+  const localTools = [createProcessDocumentTool(submitDocument?.inputSchema)];
+
+  // Local tools take precedence over remote tools of the same name
+  const listedRemoteTools = remoteTools.filter(
     (remoteTool) =>
+      !internalRemoteTools.includes(remoteTool.name) &&
       !localTools.some((localTool) => localTool.name === remoteTool.name),
   );
 
-  tools = [...localTools, ...filteredRemoteTools];
+  tools = [...localTools, ...listedRemoteTools];
 }
 
 /**
